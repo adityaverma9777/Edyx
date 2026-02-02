@@ -17,6 +17,9 @@ export const mailer = nodemailer.createTransport({
     user: GMAIL_USER,
     pass: GMAIL_APP_PASSWORD,
   },
+  // Force IPv4 to avoid IPv6 connection timeouts on some cloud providers
+  family: 4,
+  connectionTimeout: 10000, // 10 seconds
 });
 
 export async function sendOtpEmail(
