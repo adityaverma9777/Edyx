@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const {
   GMAIL_USER,
@@ -20,7 +21,7 @@ export const mailer = nodemailer.createTransport({
   // Force IPv4 to avoid IPv6 connection timeouts on some cloud providers
   family: 4,
   connectionTimeout: 10000, // 10 seconds
-});
+} as SMTPTransport.Options);
 
 export async function sendOtpEmail(
   to: string,
