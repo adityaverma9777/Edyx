@@ -1,36 +1,15 @@
-import nodemailer from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { Resend } from "resend";
 
-const {
-  GMAIL_USER,
-  GMAIL_APP_PASSWORD,
-} = process.env;
+const { RESEND_API_KEY } = process.env;
 
-if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-  throw new Error("Missing Gmail environment variables");
+if (!RESEND_API_KEY) {
+  // Warn but don't crash dev environment if missing, but throw in prod if needed
+  console.warn("Missing RESEND_API_KEY environment variable");
 }
 
-export const mailer = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // true for 465, false for other ports
-  auth: {
-    user: GMAIL_USER,
-    pass: GMAIL_APP_PASSWORD,
-  },
-  family: 4, // Force IPv4
-  logger: true,
-  debug: true,
-  // Increase timeouts to handle slow cloud network connections
-  connectionTimeout: 60000, // 60s
-  greetingTimeout: 30000,   // 30s
-  socketTimeout: 60000,     // 60s
-} as SMTPTransport.Options);
+export const resend = new Resend(RESEND_API_KEY);
 
-export async function sendOtpEmail(
-  to: string,
-  otp: string
-) {
+export async function sendOtpEmail(to: string, otp: string) {
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.5;">
       <h2>Edyx Verification Code</h2>
@@ -45,10 +24,22 @@ export async function sendOtpEmail(
     </div>
   `;
 
-  await mailer.sendMail({
-    from: `"Edyx" <${GMAIL_USER}>`,
-    to,
-    subject: "Your Edyx Login Code",
-    html,
-  });
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "onboarding@resend.dev", // Default test domain allowed for sending to the account owner's email
+      to: [to],
+      subject: "Your Edyx Login Code",
+      html: html,
+    });
+
+    if (error) {
+      console.error("Resend API Error:", error);
+      throw new Error("Failed to send email via Resend");
+    }
+
+    console.log("Email sent successfully via Resend:", data?.id);
+  } catch (err) {
+    console.error("Send Email Exceptions:", err);
+    throw err;
+  }
 }
