@@ -12,17 +12,19 @@ if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
 
 export const mailer = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // use false for STARTTLS; true for 465
+  port: 465,
+  secure: true, // true for 465, false for other ports
   auth: {
     user: GMAIL_USER,
     pass: GMAIL_APP_PASSWORD,
   },
-  // Force IPv4 to avoid IPv6 connection timeouts on some cloud providers
-  family: 4,
-  connectionTimeout: 10000, // 10 seconds
+  family: 4, // Force IPv4
   logger: true,
   debug: true,
+  // Increase timeouts to handle slow cloud network connections
+  connectionTimeout: 60000, // 60s
+  greetingTimeout: 30000,   // 30s
+  socketTimeout: 60000,     // 60s
 } as SMTPTransport.Options);
 
 export async function sendOtpEmail(
