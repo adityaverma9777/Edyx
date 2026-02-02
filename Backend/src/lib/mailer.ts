@@ -1,13 +1,19 @@
-import { Resend } from "resend";
+import Mailjet from "node-mailjet";
 
-const { RESEND_API_KEY } = process.env;
+const {
+  MJ_APIKEY_PUBLIC,
+  MJ_APIKEY_PRIVATE,
+  MJ_SENDER_EMAIL,
+} = process.env;
 
-if (!RESEND_API_KEY) {
-  // Warn but don't crash dev environment if missing, but throw in prod if needed
-  console.warn("Missing RESEND_API_KEY environment variable");
+if (!MJ_APIKEY_PUBLIC || !MJ_APIKEY_PRIVATE || !MJ_SENDER_EMAIL) {
+  console.warn("Missing Mailjet environment variables");
 }
 
-export const resend = new Resend(RESEND_API_KEY);
+const mailjet = new Mailjet({
+  apiKey: MJ_APIKEY_PUBLIC,
+  apiSecret: MJ_APIKEY_PRIVATE
+});
 
 export async function sendOtpEmail(to: string, otp: string) {
   const html = `
@@ -25,21 +31,27 @@ export async function sendOtpEmail(to: string, otp: string) {
   `;
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: "onboarding@resend.dev", // Default test domain allowed for sending to the account owner's email
-      to: [to],
-      subject: "Your Edyx Login Code",
-      html: html,
+    const request = await mailjet.post("send", { version: "v3.1" }).request({
+      Messages: [
+        {
+          From: {
+            Email: MJ_SENDER_EMAIL,
+            Name: "Edyx Auth",
+          },
+          To: [
+            {
+              Email: to,
+            },
+          ],
+          Subject: "Your Edyx Login Code",
+          HTMLPart: html,
+        },
+      ],
     });
 
-    if (error) {
-      console.error("Resend API Error:", error);
-      throw new Error("Failed to send email via Resend");
-    }
-
-    console.log("Email sent successfully via Resend:", data?.id);
-  } catch (err) {
-    console.error("Send Email Exceptions:", err);
-    throw err;
+    console.log("Email sent successfully via Mailjet:", request.body);
+  } catch (err: any) {
+    console.error("Mailjet API Error:", err.statusCode, err.toString());
+    throw new Error("Failed to send email via Mailjet");
   }
 }
