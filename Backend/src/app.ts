@@ -3,6 +3,8 @@ import cors from "cors";
 import { supabase } from "./lib/supabase";
 import authRoutes from "./routes/auth";
 import apiKeyRoutes from "./routes/apikeys";
+import chatRoutes from "./routes/chat";
+
 const app = express();
 
 app.use(cors());
@@ -12,6 +14,7 @@ app.get("/", (_req, res) => {
 });
 app.use("/auth", authRoutes);
 app.use("/keys", apiKeyRoutes);
+app.use("/chat", chatRoutes);
 
 app.get("/health/db", async (_req, res) => {
   const { data, error } = await supabase
@@ -26,7 +29,7 @@ app.get("/health/db", async (_req, res) => {
   res.json({ ok: true, db: "connected" });
 });
 
-// Check if api_keys table exists
+// check table exist
 app.get("/health/api-keys", async (_req, res) => {
   const { data, error } = await supabase
     .from("api_keys")
