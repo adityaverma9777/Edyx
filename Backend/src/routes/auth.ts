@@ -15,7 +15,7 @@ function now(): number {
   return Math.floor(Date.now() / 1000);
 }
 
-// ===================== REQUEST OTP =====================
+//request otp
 router.post("/request-otp", async (req, res) => {
   try {
     const { email } = req.body;
@@ -50,11 +50,14 @@ router.post("/request-otp", async (req, res) => {
 
     const { error: insertError } = await supabase
       .from("otp_codes")
-      .upsert({
-        email,
-        otp_hash: otpHash,
-        expires_at: otpExpiry(),
-      });
+      .upsert(
+        {
+          email,
+          otp_hash: otpHash,
+          expires_at: otpExpiry(),
+        },
+        { onConflict: "email" }
+      );
 
     if (insertError) {
       console.error("OTP insert failed:", insertError);
@@ -70,7 +73,7 @@ router.post("/request-otp", async (req, res) => {
   }
 });
 
-// ===================== VERIFY OTP =====================
+//verify otp
 router.post("/verify-otp", async (req, res) => {
   try {
     const { email, otp } = req.body;
