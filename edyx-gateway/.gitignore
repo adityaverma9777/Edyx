@@ -1,0 +1,9 @@
+# Cloudflare Workers
+.wrangler/
+.dev.vars
+dist/
+worker/
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
