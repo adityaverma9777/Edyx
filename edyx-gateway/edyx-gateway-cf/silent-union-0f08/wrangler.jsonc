@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developers.cloudflare.com/workers/wrangler/schema.json",
+  "name": "edyx-gateway",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-11-01",
+
+  "kv_namespaces": [
+    {
+      "binding": "API_KEYS",
+      "id": "f40c4bf3e5d94fff86af7c73b2d93eda"
+    }
+  ]
+}
