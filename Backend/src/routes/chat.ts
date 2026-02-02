@@ -29,7 +29,10 @@ router.post("/demo", async (req: Request, res: Response) => {
         const hfResponse = await fetch(targetUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages }),
+            body: JSON.stringify({
+                messages,
+                max_tokens: 1000
+            }),
         });
 
         if (!hfResponse.ok) {
