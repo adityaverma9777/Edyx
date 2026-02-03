@@ -8,7 +8,6 @@ import PhoneMockup from "../components/Home/PhoneMockup";
 import ModelCompare from "../components/Home/ModelCompare";
 import Trust from "../components/Home/Trust";
 import Narrative from "../components/Home/Narrative";
-import HowItWorks from "../components/Home/HowItWorks";
 import MacbookMockup from "../components/Home/MacbookMockup";
 import BabyGrowth from "../components/Home/BabyGrowth";
 

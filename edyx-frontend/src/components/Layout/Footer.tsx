@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, MapPin, Globe, CheckCircle, AlertTriangle, X } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
-import { WavingFlag, SpinningEarth } from "../Footer/Footer3DComponents";
+import { WavingFlag } from "../Footer/Footer3DComponents";
 
 const Footer: React.FC = () => {
   const [isDataModalOpen, setIsDataModalOpen] = useState(false);

@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
 import { motion } from 'framer-motion';
-import { Book, Code, Shield, Cpu, Settings, Terminal, Github } from 'lucide-react';
+import { Book, Shield, Cpu, Settings, Terminal } from 'lucide-react';
 
 const Docs: React.FC = () => {
     return (
