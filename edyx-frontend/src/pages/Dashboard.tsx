@@ -624,6 +624,92 @@ const Dashboard: React.FC = () => {
 
                 /* Metrics */
                 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 40px; }
+
+                /* Mobile Styles */
+                @media (max-width: 768px) {
+                    .dashboard-container { padding: 100px 12px 40px; }
+                    .dash-header, .details-header { 
+                        flex-direction: column; 
+                        gap: 16px; 
+                        align-items: flex-start;
+                        margin-bottom: 32px;
+                    }
+                    .dash-header h2, .details-header h2 { font-size: 1.8rem; }
+                    .models-grid { 
+                        grid-template-columns: 1fr; 
+                        gap: 20px;
+                    }
+                    .model-card { 
+                        padding: 28px; 
+                        border-radius: 24px;
+                    }
+                    .model-card:hover { transform: none; }
+                    .model-icon { width: 56px; height: 56px; margin-bottom: 20px; }
+                    .model-card h3 { font-size: 1.25rem; }
+                    .model-card p { font-size: 0.95rem; }
+                    .card-arrow { display: none; }
+                    
+                    .details-tabs { 
+                        width: 100%; 
+                        justify-content: center;
+                        margin-bottom: 24px;
+                    }
+                    .tab-content { 
+                        padding: 24px 16px; 
+                        border-radius: 20px;
+                        min-height: auto;
+                    }
+                    
+                    .create-key-box { padding: 20px; border-radius: 16px; margin-bottom: 24px; }
+                    .input-row { flex-direction: column; gap: 12px; }
+                    .key-input { padding: 14px 16px; }
+                    .generate-btn { width: 100%; justify-content: center; padding: 14px; }
+                    
+                    .key-item { 
+                        flex-direction: column; 
+                        align-items: flex-start; 
+                        gap: 16px;
+                        padding: 20px 16px;
+                    }
+                    .key-actions { 
+                        width: 100%; 
+                        justify-content: space-between;
+                    }
+                    
+                    .new-key-display { padding: 20px; border-radius: 16px; }
+                    .key-value-box { 
+                        flex-direction: column; 
+                        gap: 12px;
+                        font-size: 0.85rem;
+                        word-break: break-all;
+                    }
+                    
+                    .stats-grid { 
+                        grid-template-columns: 1fr; 
+                        gap: 16px; 
+                    }
+                    
+                    .code-block { 
+                        padding: 16px; 
+                        border-radius: 12px; 
+                        font-size: 0.75rem;
+                    }
+                    .code-block pre { white-space: pre-wrap; word-break: break-all; }
+                    
+                    .header-info { gap: 12px; }
+                    .back-btn { padding: 6px 12px; font-size: 0.85rem; }
+                    .logout-btn { padding: 8px 16px; font-size: 0.9rem; }
+                }
+
+                @media (max-width: 480px) {
+                    .dashboard-container { padding: 90px 8px 32px; }
+                    .dash-header h2, .details-header h2 { font-size: 1.5rem; }
+                    .model-card { padding: 20px; }
+                    .model-icon { width: 48px; height: 48px; border-radius: 14px; }
+                    .tab-content { padding: 16px 12px; }
+                    .create-key-box { padding: 16px; }
+                    .code-block { font-size: 0.7rem; padding: 12px; }
+                }
             `}</style>
         </Layout>
     );

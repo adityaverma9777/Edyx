@@ -190,7 +190,9 @@ const ChatDemo: React.FC = () => {
           height: 440px;
           display: flex;
           flex-direction: column;
-          transform: translateY(0);
+          transform: translateZ(0);
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
           transition: transform 0.4s ease;
           will-change: transform; /* Performance Hint */
         }

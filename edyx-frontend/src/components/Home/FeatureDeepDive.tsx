@@ -478,7 +478,9 @@ const FeatureDeepDive: React.FC = () => {
            .deep-dive-section { padding: 60px 20px; margin: 10px; border-radius: 24px; }
            .container { gap: 80px; }
            .feature-text h2 { font-size: 2rem; }
-           .visual-card { height: auto; min-height: 200px; padding: 24px; }
+           .visual-card { height: auto; min-height: 200px; padding: 24px; width: 100%; }
+           .brain-visual { min-height: 180px; }
+           .feature-visual { width: 100%; }
         }
 
         @media (max-width: 480px) {
