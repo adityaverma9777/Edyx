@@ -61,7 +61,7 @@ async function deleteFromCloudflareKV(apiKey: string): Promise<void> {
 
 
 router.post("/", requireAuth, async (req: AuthRequest, res) => {
-  console.log("DEBUG: Hit POST /keys route"); // <--- Debug log
+  console.log("DEBUG: Hit POST /keys route");
   try {
     const { name, model } = req.body;
     const userId = req.user!.user_id;
@@ -74,18 +74,35 @@ router.post("/", requireAuth, async (req: AuthRequest, res) => {
       return res.status(400).json({ error: "Invalid model. Must be: convo, balanced, or fast" });
     }
 
+    // Check Limit (Max 10 per model)
+    const { count, error: countError } = await supabase
+      .from("api_keys")
+      .select("*", { count: 'exact', head: true })
+      .eq("user_id", userId)
+      .eq("model", model);
+
+    if (countError) {
+      console.error("Failed to check key limit", countError);
+      return res.status(500).json({ error: "Failed to check key limits" });
+    }
+
+    if ((count || 0) >= 10) {
+      return res.status(400).json({ error: `Limit reached. You can only have 10 keys for ${model} model.` });
+    }
+
     const apiKey = generateApiKey();
 
     const { error } = await supabase.from("api_keys").insert({
       user_id: userId,
-
       model,
       api_key: apiKey,
+      name, // Save the name!
+      total_requests: 0,
+      total_tokens: 0
     });
 
     if (error) {
       console.error("API key insert error:", JSON.stringify(error, null, 2));
-      console.error("Error details - code:", error.code, "message:", error.message, "hint:", error.hint);
       return res.status(500).json({ error: "Failed to store API key", details: error.message });
     }
 
@@ -97,14 +114,13 @@ router.post("/", requireAuth, async (req: AuthRequest, res) => {
       });
     } catch (kvError) {
       console.error("KV push failed, but key is stored in Supabase:", kvError);
-      // Don't fail the request, key is still valid via backend validation
     }
 
     return res.json({
       api_key: apiKey,
       name,
       model,
-      message: "API key created successfully. Use this key to call the /chat endpoint.",
+      message: "API key created successfully.",
     });
   } catch (err) {
     console.error("Create key error:", err);
@@ -119,7 +135,7 @@ router.get("/", requireAuth, async (req: AuthRequest, res) => {
 
     const { data, error } = await supabase
       .from("api_keys")
-      .select("id, model, created_at, api_key")
+      .select("id, model, created_at, api_key, name, total_requests, total_tokens")
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
 
@@ -131,10 +147,12 @@ router.get("/", requireAuth, async (req: AuthRequest, res) => {
     // Mask the API keys 
     const maskedKeys = (data || []).map((key) => ({
       id: key.id,
-      name: "Untitled Key", // Placeholder until DB schema is fixed
+      name: key.name || "Untitled Key",
       model: key.model,
       created_at: key.created_at,
       api_key_prefix: key.api_key.slice(0, 20) + "...",
+      total_requests: key.total_requests || 0,
+      total_tokens: key.total_tokens || 0
     }));
 
     return res.json({ keys: maskedKeys });
