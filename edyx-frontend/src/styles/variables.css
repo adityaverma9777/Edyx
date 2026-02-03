@@ -1,0 +1,41 @@
+:root {
+  /* Apple Color Palette */
+  --color-bg: #ffffff;
+  --color-text-primary: #1d1d1f;
+  --color-text-secondary: #86868b;
+  --color-text-tertiary: #a1a1a6;
+  
+  /* Accents (Strict) */
+  --color-accent-primary: #dd7a83;
+  --color-accent-secondary: #e3bfc3;
+  --color-accent-glow: rgba(221, 122, 131, 0.4);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-blur: blur(20px);
+  
+  /* Surfaces */
+  --surface-primary: #ffffff;
+  --surface-secondary: #fbfbfd; /* Apple Store light gray */
+  --surface-float: rgba(255, 255, 255, 0.8);
+
+  /* Shadows (Apple Style - Soft & Diffused) */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08); /* Typical "Float" shadow */
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+  
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --tracking-tight: -0.015em;
+  
+  /* Animation */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.1); /* Bouncy Apple feel */
+  --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1); /* iOS slide feel */
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Scope for future dark mode - inactive for now */
+}
