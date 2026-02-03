@@ -9,7 +9,7 @@ const MODEL_ENDPOINTS: Record<string, string> = {
     fast: "https://edyxapi-edyx-qwen-fast.hf.space/v1/chat",
 };
 
-// Protected Chat Endpoint (Uses API Key)
+// Protected Chat Endpoint 
 router.post("/", async (req: Request, res: Response) => {
     try {
         const authHeader = req.headers.authorization;
@@ -26,9 +26,6 @@ router.post("/", async (req: Request, res: Response) => {
             return;
         }
 
-        // 1. Validate API Key & Get User
-        // OPTIMIZATION: Ideally use Redis/Cloudflare KV here for speed. 
-        // For now, checking DB directly as requested for "real metrics".
         const { data: keyData, error: keyError } = await supabase
             .from("api_keys")
             .select("id, model, user_id")
@@ -45,7 +42,7 @@ router.post("/", async (req: Request, res: Response) => {
             return;
         }
 
-        // 2. Proxy to Inference Engine
+
         const targetUrl = MODEL_ENDPOINTS[model];
         if (!targetUrl) {
             res.status(400).json({ error: "Invalid model configuration" });
@@ -56,7 +53,11 @@ router.post("/", async (req: Request, res: Response) => {
         const hfResponse = await fetch(targetUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages }),
+            body: JSON.stringify({
+                messages,
+                max_tokens: req.body.max_tokens || 4096,
+                temperature: req.body.temperature || 0.7
+            }),
         });
 
         if (!hfResponse.ok) {
@@ -68,13 +69,10 @@ router.post("/", async (req: Request, res: Response) => {
 
         const data = await hfResponse.json();
 
-        // 3. Track Usage (Async to not block response)
-        // Estimate tokens (approx 4 chars = 1 token)
         const inputTokens = JSON.stringify(messages).length / 4;
-        const outputTokens = JSON.stringify(data).length / 4; // Rudimentary estimation
+        const outputTokens = JSON.stringify(data).length / 4;
         const totalTokens = Math.ceil(inputTokens + outputTokens);
 
-        // RPC call to increment usage atomically
         supabase.rpc('increment_usage', {
             key_id: keyData.id,
             tokens: totalTokens
@@ -90,11 +88,11 @@ router.post("/", async (req: Request, res: Response) => {
     }
 });
 
-// Public Demo Route (Rate limited typically, but keeping for frontend demo)
+
 router.post("/demo", async (req: Request, res: Response) => {
     try {
         const { model, messages } = req.body;
-        // ... (rest of demo route)
+
 
         if (!model || !messages || !Array.isArray(messages)) {
             res.status(400).json({ error: "Invalid request body" });
