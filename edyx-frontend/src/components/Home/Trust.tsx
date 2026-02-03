@@ -90,6 +90,14 @@ const Trust: React.FC = () => {
 
         @media (max-width: 768px) {
            .trust-grid { grid-template-columns: 1fr; gap: 40px; }
+           .trust-section { margin: 10px; border-radius: 24px; padding: 60px 20px; }
+        }
+
+        @media (max-width: 480px) {
+           .trust-section { padding: 40px 16px; }
+           .trust-title { font-size: 1.6rem; margin-bottom: 32px; }
+           .trust-content h3 { font-size: 1rem; }
+           .trust-content p { font-size: 0.9rem; }
         }
       `}</style>
     </section>

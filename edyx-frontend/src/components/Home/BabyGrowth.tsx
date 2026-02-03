@@ -200,7 +200,19 @@ const BabyGrowth: React.FC = () => {
 
                 @media (max-width: 768px) {
                     .baby-container, .baby-container.reverse { flex-direction: column !important; text-align: center; gap: 32px; padding: 32px; }
+                    .baby-container:hover { transform: none; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05); }
                     .baby-content { text-align: center; }
+                    .avatar-container { width: 100px; height: 100px; }
+                    .heart-badge { width: 32px; height: 32px; }
+                    .baby-section { margin: 10px; border-radius: 24px; padding: 40px 16px; }
+                }
+
+                @media (max-width: 480px) {
+                    .baby-container { padding: 24px; border-radius: 20px; }
+                    .baby-content h3 { font-size: 1.4rem; }
+                    .baby-content p { font-size: 0.95rem; }
+                    .avatar-container { width: 80px; height: 80px; }
+                    .heart-badge { width: 28px; height: 28px; border-width: 3px; }
                 }
             `}</style>
         </section>

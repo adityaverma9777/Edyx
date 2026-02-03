@@ -263,12 +263,29 @@ const MacbookMockup: React.FC = () => {
         }
 
         @media (max-width: 960px) {
-           .macbook { width: 100%; height: auto; aspect-ratio: 16/10; }
-           .lid { width: 100%; height: 100%; }
+           .macbook { width: 100%; height: auto; aspect-ratio: 16/10; transform: rotateX(8deg); }
+           .macbook:hover { transform: rotateX(8deg); } /* Disable hover on touch */
+           .lid { width: 100%; height: 100%; padding: 16px; }
            .base { width: 120%; bottom: -4%; height: 4%; }
            .macbook-section { padding: 40px 10px; overflow: visible; }
-           .token-count { font-size: 3.5rem; }
-           .token-count .plus { font-size: 3rem; }
+           .token-count { font-size: 3rem; }
+           .token-count .plus { font-size: 2.5rem; }
+           .token-label { font-size: 0.9rem; padding: 6px 12px; }
+           .floating-icon { display: none; }
+           .screen-memoji { width: 120px; bottom: -15px; }
+           .status-badge { font-size: 0.75rem; padding: 4px 10px; }
+           .screen-header { top: 12px; right: 16px; }
+        }
+
+        @media (max-width: 480px) {
+           .macbook { transform: rotateX(5deg); }
+           .macbook:hover { transform: rotateX(5deg); }
+           .token-count { font-size: 2rem; }
+           .token-count .plus { font-size: 1.5rem; }
+           .token-label { font-size: 0.8rem; }
+           .screen-memoji { width: 80px; bottom: -10px; }
+           .status-badge { display: none; }
+           .lid { padding: 10px; border-radius: 16px 16px 0 0; }
         }
       `}</style>
         </section>

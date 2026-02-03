@@ -165,6 +165,15 @@ const ModelCompare: React.FC = () => {
         @media (max-width: 860px) {
            .models-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
            .model-card.highlight { transform: scale(1); }
+           .model-card:hover { transform: none; }
+           .model-card.highlight:hover { transform: none; }
+           .models-section { padding: 60px 16px; }
+        }
+
+        @media (max-width: 480px) {
+           .models-grid { max-width: 100%; }
+           .model-card { padding: 24px; border-radius: 16px; }
+           .model-name { font-size: 1.1rem; }
         }
       `}</style>
     </section >

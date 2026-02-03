@@ -384,6 +384,47 @@ const ChatDemo: React.FC = () => {
             background: black;
         }
 
+        @media (max-width: 768px) {
+          .glass-panel {
+            height: auto;
+            min-height: 380px;
+            border-radius: 20px;
+          }
+          .chat-header {
+            padding: 16px;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+          }
+          .header-hint {
+            display: none;
+          }
+          .chat-messages {
+            padding: 16px;
+            gap: 14px;
+          }
+          .message-bubble {
+            max-width: 90%;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+          }
+          .chat-input-area {
+            padding: 16px;
+            gap: 12px;
+          }
+          .input-fake {
+            height: 44px;
+            font-size: 0.95rem;
+          }
+          .send-btn {
+            width: 44px;
+            height: 44px;
+          }
+          .model-dropdown {
+            width: 200px;
+          }
+        }
+
       `}</style>
     </div>
   );

@@ -163,6 +163,25 @@ const Hero: React.FC = () => {
           .mobile-break {
             display: inline;
           }
+
+          .hero-visual {
+            height: 300px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-title {
+            font-size: 2.2rem;
+          }
+          .hero-subtitle {
+            font-size: 1rem;
+          }
+          .hero-visual {
+            height: 220px;
+          }
+          .visual-wrapper {
+            border-radius: 12px;
+          }
         }
       `}</style>
     </section>

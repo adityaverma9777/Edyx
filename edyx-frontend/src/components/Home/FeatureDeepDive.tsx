@@ -475,9 +475,19 @@ const FeatureDeepDive: React.FC = () => {
            .feature-row, .feature-row.reverse { flex-direction: column; gap: 40px; text-align: center; }
            .feature-text { align-items: center; }
            .feature-list { align-items: center; }
-           .deep-dive-section { padding: 60px 20px; }
+           .deep-dive-section { padding: 60px 20px; margin: 10px; border-radius: 24px; }
            .container { gap: 80px; }
            .feature-text h2 { font-size: 2rem; }
+           .visual-card { height: auto; min-height: 200px; padding: 24px; }
+        }
+
+        @media (max-width: 480px) {
+           .deep-dive-section { padding: 40px 16px; margin: 8px; }
+           .container { gap: 60px; }
+           .feature-text h2 { font-size: 1.6rem; }
+           .feature-text p { font-size: 0.95rem; }
+           .visual-card { min-height: 180px; padding: 20px; border-radius: 16px; }
+           .icon-box { width: 40px; height: 40px; }
         }
       `}</style>
         </section>
