@@ -31,7 +31,11 @@ const ChatDemo: React.FC = () => {
       // Build context from previous messages for better continuity if needed, 
       // but for demo often just last message or simple history is fine.
       // Let's send full history + new message.
-      const chatHistory = [...messages, userMsg].filter(m => m.role !== 'system'); // simple filter if needed
+      const history = [...messages, userMsg].filter(m => m.role !== 'system');
+      const chatHistory = [
+        { role: "system", content: "You are Edyx, an AI assistant created by the Edyx team to be helpful, harmless, and honest. If you have any questions or need information on various topics, feel free to ask me anything." },
+        ...history
+      ];
 
       const response = await fetch("https://edyx-backend.onrender.com/chat/demo", {
         method: "POST",
