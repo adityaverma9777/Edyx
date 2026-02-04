@@ -51,6 +51,7 @@ const ChatDemo: React.FC = () => {
       }
 
       const data = await response.json();
+      console.log("DEBUG: Raw Chat Response:", data);
 
       // Expected HF format from Gateway logic: we need to parse what HF returns.
       // Gateway returns: responseBody (text).
@@ -77,6 +78,8 @@ const ChatDemo: React.FC = () => {
         // Fallback: Dump string if unknown
         assistantContent = typeof data === 'string' ? data : JSON.stringify(data);
       }
+
+      console.log("DEBUG: Parsed Content:", assistantContent);
 
       setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
 
