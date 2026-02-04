@@ -28,14 +28,9 @@ const ChatDemo: React.FC = () => {
     setIsTyping(true);
 
     try {
-      // Build context from previous messages for better continuity if needed, 
-      // but for demo often just last message or simple history is fine.
-      // Let's send full history + new message.
-      const history = [...messages, userMsg].filter(m => m.role !== 'system');
-      const chatHistory = [
-        { role: "system", content: "You are Edyx, an AI assistant created by the Edyx team to be helpful, harmless, and honest. If you have any questions or need information on various topics, feel free to ask me anything." },
-        ...history
-      ];
+
+      // Build context from previous messages
+      const chatHistory = [...messages, userMsg];
 
       const response = await fetch("https://edyx-backend.onrender.com/chat/demo", {
         method: "POST",
@@ -51,16 +46,6 @@ const ChatDemo: React.FC = () => {
       }
 
       const data = await response.json();
-      console.log("DEBUG: Raw Chat Response:", data);
-
-      // Expected HF format from Gateway logic: we need to parse what HF returns.
-      // Gateway returns: responseBody (text).
-      // Wait, endpoint is `/v1/chat`. This usually follows OpenAI format or similar.
-      // Let's assume standard { choices: [{ message: { content: "..." } }] } OR just content?
-      // Inspecting Gateway again: 
-      // `const responseBody = await hfResp.text(); return new Response(responseBody...)`
-      // So whatever HF returns, we get.
-      // Usually these HF spaces (TGI/vLLM) return OpenAI compatible JSON.
 
       let assistantContent = "Error parsing response.";
 
@@ -78,8 +63,6 @@ const ChatDemo: React.FC = () => {
         // Fallback: Dump string if unknown
         assistantContent = typeof data === 'string' ? data : JSON.stringify(data);
       }
-
-      console.log("DEBUG: Parsed Content:", assistantContent);
 
       setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
 
