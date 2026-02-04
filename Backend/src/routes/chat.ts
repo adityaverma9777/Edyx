@@ -112,6 +112,7 @@ router.post("/demo", async (req: Request, res: Response) => {
             body: JSON.stringify({
                 messages,
                 max_tokens: 4096,
+                max_new_tokens: 4096,
                 temperature: 0.6,
                 repetition_penalty: 1.1,
                 stop: ["<|end|>", "<|endoftext|>", "<|im_end|>", "<|eot_id|>", "User:", "\nUser:"]
