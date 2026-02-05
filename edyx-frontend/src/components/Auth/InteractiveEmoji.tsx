@@ -13,10 +13,10 @@ const InteractiveEmoji: React.FC<InteractiveEmojiProps> = ({ isFocused, isValid,
     const [eyePos, setEyePos] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
-        // Stop tracking if valid (Happy state logic) or in OTP step (Shy/Hidden logic)
+ 
         if (!faceRef.current || isValid || step === "otp") return;
 
-        // Calculate eye movement limited to a radius
+
         const rect = faceRef.current.getBoundingClientRect();
         const faceCenter = {
             x: rect.left + rect.width / 2,
@@ -39,9 +39,9 @@ const InteractiveEmoji: React.FC<InteractiveEmojiProps> = ({ isFocused, isValid,
 
     }, [mousePos]);
 
-    // Override eye position if focused on input
+
     const currentEyePos = isFocused
-        ? { x: -8, y: 12 } // Look down-left towards input
+        ? { x: -8, y: 12 } 
         : eyePos;
 
     return (
@@ -49,12 +49,12 @@ const InteractiveEmoji: React.FC<InteractiveEmojiProps> = ({ isFocused, isValid,
             <motion.div
                 className="emoji-face"
                 animate={{
-                    backgroundColor: isValid ? "#FECaca" : "#FFE4E6", // Pinkish blush when valid
+                    backgroundColor: isValid ? "#FECaca" : "#FFE4E6", 
                     scale: isValid ? 1.1 : 1
                 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
-                {/* Eyes Container */}
+
                 <motion.div
                     className="eyes-row"
                     animate={{
@@ -66,7 +66,7 @@ const InteractiveEmoji: React.FC<InteractiveEmojiProps> = ({ isFocused, isValid,
                         scale: { duration: 0.3 }
                     }}
                 >
-                    {/* Left Eye */}
+
                     <motion.div className="eye-bg">
                         <motion.div
                             className="pupil"
@@ -82,7 +82,7 @@ const InteractiveEmoji: React.FC<InteractiveEmojiProps> = ({ isFocused, isValid,
                         )}
                     </motion.div>
 
-                    {/* Right Eye */}
+                    
                     <motion.div className="eye-bg">
                         <motion.div
                             className="pupil"
@@ -107,12 +107,12 @@ const InteractiveEmoji: React.FC<InteractiveEmojiProps> = ({ isFocused, isValid,
                         width: step === "otp" ? 40 : (isValid ? 60 : 20),
                         borderRadius: step === "otp" ? "0 0 10px 30px" : (isValid ? "0 0 40px 40px" : "20px"),
                         y: step === "otp" ? 2 : (isValid ? 5 : 0),
-                        x: step === "otp" ? 5 : 0, // Slight offset for smirk
+                        x: step === "otp" ? 5 : 0, 
                         rotate: step === "otp" ? -5 : 0
                     }}
                 />
 
-                {/* Savage Glasses (Deal with it) for OTP */}
+                
                 {step === "otp" && (
                     <>
                         <motion.div

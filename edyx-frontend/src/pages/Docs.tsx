@@ -21,7 +21,7 @@ const Docs: React.FC = () => {
                 </motion.div>
 
                 <div className="docs-grid">
-                    {/* Sidebar / Navigation (Sticky) */}
+
                     <aside className="docs-sidebar">
                         <nav>
                             <a href="#models" className="active">Models</a>
@@ -32,10 +32,10 @@ const Docs: React.FC = () => {
                         </nav>
                     </aside>
 
-                    {/* Main Content Sections */}
+
                     <div className="docs-sections">
 
-                        {/* MODELS SECTION */}
+
                         <section id="models" className="doc-section">
                             <div className="section-icon"><Cpu size={24} /></div>
                             <h2>Edyx Models</h2>
@@ -69,7 +69,7 @@ const Docs: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* API USAGE */}
+
                         <section id="api" className="doc-section">
                             <div className="section-icon"><Terminal size={24} /></div>
                             <h2>API Reference</h2>
@@ -132,7 +132,7 @@ const Docs: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* PERSONALIZATION SECTION */}
+
                         <section id="personalization" className="doc-section">
                             <div className="section-icon"><Settings size={24} /></div>
                             <h2>Personalization & Settings</h2>
@@ -144,7 +144,7 @@ const Docs: React.FC = () => {
                             </ul>
                         </section>
 
-                        {/* USAGE POLICY */}
+
                         <section id="usage-policy" className="doc-section">
                             <div className="section-icon"><Book size={24} /></div>
                             <h2>Usage Policy</h2>
@@ -169,7 +169,7 @@ const Docs: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* SECURITY */}
+
                         <section id="security" className="doc-section">
                             <div className="section-icon"><Shield size={24} /></div>
                             <h2>Security & Privacy</h2>

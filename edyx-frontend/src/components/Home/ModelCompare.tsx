@@ -9,7 +9,7 @@ const models = [
     desc: "Instant replies for chatbots.",
     latency: "~5s",
     useCase: "Chatbots, Simple Queries",
-    color: "#eab308", // Yellow to match dashboard
+    color: "#eab308", 
     highlight: false
   },
   {
@@ -19,8 +19,8 @@ const models = [
     desc: "Best model. Most smart.",
     latency: "~60s",
     useCase: "Complex Reasoning, Best Results",
-    color: "#3b82f6", // Blue to match dashboard
-    highlight: true // Center card highlight
+    color: "#3b82f6", 
+    highlight: true 
   },
   {
     id: "convo",
@@ -29,7 +29,7 @@ const models = [
     desc: "Trained for conversations.",
     latency: "~25s",
     useCase: "Natural Chat, Long Context",
-    color: "#ec4899", // Pink to match dashboard
+    color: "#ec4899", 
     highlight: false
   }
 ];

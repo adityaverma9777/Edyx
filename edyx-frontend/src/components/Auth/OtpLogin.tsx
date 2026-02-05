@@ -47,7 +47,7 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
     const handleOtpChange = (index: number, value: string) => {
         if (!/^\d*$/.test(value)) return; // Only allow numbers
         if (value.length > 1) {
-            // Handle paste (simplified for single digit focus)
+            
             const chars = value.split('').slice(0, 6 - index);
             const newOtp = [...otp];
             chars.forEach((char, i) => {
@@ -63,7 +63,7 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
         newOtp[index] = value;
         setOtp(newOtp);
 
-        // Auto-focus next input
+        
         if (value && index < 5) {
             const nextInput = document.getElementById(`otp-${index + 1}`);
             nextInput?.focus();
@@ -79,7 +79,7 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
                 setOtp(newOtp);
                 document.getElementById(`otp-${index - 1}`)?.focus();
             } else if (otp[index]) {
-                // If current has value, just clear it (default behavior) but stay focused or let change handler handle it
+                
             }
         }
     };

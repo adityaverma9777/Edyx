@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-// --- Types ---
+
 type ModelType = 'fast' | 'balanced' | 'convo';
 
 interface ApiKey {
@@ -26,26 +26,26 @@ const MODELS = [
         name: 'Fast',
         description: 'Response time: ~5 seconds. Optimized for chatbots and simple queries.',
         icon: Zap,
-        color: '#eab308' // yellow
+        color: '#eab308' 
     },
     {
         id: 'balanced' as ModelType,
         name: 'Balanced',
         description: 'Response time: ~60 seconds. Best model, most smart. Ideal for complex reasoning.',
         icon: Cpu,
-        color: '#3b82f6' // blue
+        color: '#3b82f6' 
     },
     {
         id: 'convo' as ModelType,
         name: 'Convo',
         description: 'Response time: ~25 seconds. Trained specifically for natural, engaging conversations.',
         icon: MessageSquare,
-        color: '#ec4899' // pink
+        color: '#ec4899' 
     }
 ];
 
 const Dashboard: React.FC = () => {
-    // State
+
     const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
     const [activeTab, setActiveTab] = useState<'docs' | 'keys' | 'metrics'>('docs');
     const [keys, setKeys] = useState<ApiKey[]>([]);
@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
     const [generatedKey, setGeneratedKey] = useState<string | null>(null);
     const [selectedKeyForMetrics, setSelectedKeyForMetrics] = useState<string | 'all'>('all');
 
-    // Initial Auth Check
+
     useEffect(() => {
         const token = localStorage.getItem('authToken');
         if (!token) {
@@ -101,11 +101,11 @@ const Dashboard: React.FC = () => {
             const data = await res.json();
 
             if (res.ok) {
-                setGeneratedKey(data.api_key); // Show full key once
-                fetchKeys(); // Refresh list
+                setGeneratedKey(data.api_key); 
+                fetchKeys(); 
                 setNewKeyName('');
             } else {
-                alert(data.error || "Failed to create key"); // Simple alert for now
+                alert(data.error || "Failed to create key"); 
             }
         } catch (error) {
             console.error("Failed to create key", error);
@@ -142,13 +142,13 @@ const Dashboard: React.FC = () => {
         setTimeout(() => setCopiedKey(null), 2000);
     };
 
-    // Helper to switch to metrics for a specific key
+
     const viewKeyMetrics = (keyId: string) => {
         setSelectedKeyForMetrics(keyId);
         setActiveTab('metrics');
     };
 
-    // --- Renders ---
+
 
     const renderModelSelection = () => (
         <div className="model-selection">
@@ -192,7 +192,7 @@ const Dashboard: React.FC = () => {
         const totalRequests = metricsKeys.reduce((acc, k) => acc + (k.total_requests || 0), 0);
         const totalTokens = metricsKeys.reduce((acc, k) => acc + (k.total_tokens || 0), 0);
 
-        // Find selected key name for display if specific key selected
+        // Find selected key name 
         const selectedKeyName = selectedKeyForMetrics !== 'all'
             ? filteredKeys.find(k => k.id === selectedKeyForMetrics)?.name
             : "All Keys";
@@ -369,10 +369,7 @@ const Dashboard: React.FC = () => {
         );
     };
 
-    // ... (Top-level imports are fine)
-    // (Leaving components structure, updating JSX classNames and Inline Styles)
 
-    // ...
 
     return (
         <Layout>
@@ -715,7 +712,7 @@ const Dashboard: React.FC = () => {
     );
 };
 
-// --- Sub-components & UI Elements ---
+
 
 const ArrowRightIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -783,7 +780,7 @@ const StatCard = ({ label, value, change, good }: any) => (
     </div>
 );
 
-// Custom Premium Dropdown
+// Dropdown
 const CustomSelect = ({ options, value, onChange }: { options: { id: string, label: string }[], value: string, onChange: (val: string) => void }) => {
     const [isOpen, setIsOpen] = useState(false);
     const selectedLabel = options.find(o => o.id === value)?.label || "Select";
@@ -852,7 +849,7 @@ const CustomSelect = ({ options, value, onChange }: { options: { id: string, lab
     );
 };
 
-// --- Documentation Helper Components ---
+
 
 const CodeTabs = ({ modelId }: { modelId: string }) => {
     const [lang, setLang] = useState<'curl' | 'powershell' | 'python' | 'node'>('curl');
@@ -992,7 +989,7 @@ chat();`
 };
 
 const UsageChart = ({ data }: { data: { name: string, tokens: number, requests: number }[] }) => {
-    // Transform data for lighter chart
+
     const chartData = data.map(d => ({
         name: d.name.length > 10 ? d.name.slice(0, 10) + '...' : d.name,
         Tokens: d.tokens,

@@ -14,7 +14,7 @@ import BabyGrowth from "../components/Home/BabyGrowth";
 const LandingPage: React.FC = () => {
   const handleLoginSuccess = (email: string, token: string) => {
     console.log("Login Success:", email, token);
-    // TODO: Redirect to Dashboard and save token
+
     window.location.href = "/dashboard";
   };
 
@@ -31,12 +31,11 @@ const LandingPage: React.FC = () => {
 
         <Narrative />
 
-        {/* Spacer for breathability */}
         <div style={{ height: 60 }} />
 
         <MacbookMockup />
 
-        {/* Feature Deep Dive (EXPANDED) */}
+
         <FeatureDeepDive />
 
         <div className="spacer-lg" />
@@ -45,12 +44,12 @@ const LandingPage: React.FC = () => {
 
         <ModelCompare />
 
-        {/* Chat Demo moved here */}
+
         <ChatDemo />
 
         <div className="spacer-lg" />
 
-        {/* New "Baby Growth" / Non-Profit Heart Section */}
+  
         <BabyGrowth />
 
         <div className="spacer-lg" />

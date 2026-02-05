@@ -12,7 +12,6 @@ export function verifyOtp(otp: string, hash: string): boolean {
   return hashOtp(otp) === hash;
 }
 
-// returns UNIX epoch seconds (INT)
 export function otpExpiry(): number {
   return Math.floor(Date.now() / 1000) + 5 * 60; // 5 minutes
 }

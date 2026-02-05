@@ -4,14 +4,11 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
-// --------------------------------------------------------
-// SHADER: The Core (Liquid Plasma / Gyroid)
-// --------------------------------------------------------
 const CoreMaterial = {
   uniforms: {
     uTime: { value: 0 },
-    uColorStart: { value: new THREE.Color("#4f46e5") }, // Indigo/Deep Blue
-    uColorEnd: { value: new THREE.Color("#ec4899") },   // Pink/Magenta
+    uColorStart: { value: new THREE.Color("#4f46e5") }, 
+    uColorEnd: { value: new THREE.Color("#ec4899") },   
   },
   vertexShader: `
     varying vec2 vUv;
@@ -121,9 +118,6 @@ const CoreMaterial = {
   `
 };
 
-// --------------------------------------------------------
-// PARTICLE SHELL (The "Tech" Layer)
-// --------------------------------------------------------
 const ParticleMaterial = {
   uniforms: {
     uTime: { value: 0 },
@@ -197,13 +191,13 @@ const DigitalCore = () => {
 
   return (
     <group scale={1.2}>
-      {/* The Solid Core - Optimized Geometry */}
+
       <mesh ref={meshRef}>
         <sphereGeometry args={[1, 64, 64]} />
         <shaderMaterial args={[CoreMaterial]} />
       </mesh>
 
-      {/* The Data Shell (PointCloud) */}
+
       <points ref={pointsRef} scale={1.2}>
         <sphereGeometry args={[1, 48, 48]} />
         <shaderMaterial args={[ParticleMaterial]} />
@@ -218,7 +212,7 @@ const CustomWebGLScene: React.FC = () => {
     <div style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, pointerEvents: "none" }}>
       <Canvas
         camera={{ position: [0, 0, 4.5], fov: 45 }}
-        dpr={[1, 1.5]} // Cap at 1.5x to save GPU on retina screens
+        dpr={[1, 1.5]} 
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <ambientLight intensity={0.5} />

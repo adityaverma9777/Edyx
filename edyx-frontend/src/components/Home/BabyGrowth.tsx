@@ -2,16 +2,13 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Heart, Sprout, ShieldCheck } from "lucide-react";
 
-/**
- * A section aimed at building trust through transparency and humility.
- * Contains "Free Forever" promise and "Baby / NPO" message.
- */
+
 const BabyGrowth: React.FC = () => {
     return (
         <section className="baby-section" id="pricing">
             <div className="mission-wrapper">
 
-                {/* 1. Free Forever Promise (Memoji Right) */}
+                {/* free always card */}
                 <div className="baby-container">
                     <div className="baby-content">
                         <h3>Free Forever. For the Builders.</h3>
@@ -48,7 +45,7 @@ const BabyGrowth: React.FC = () => {
                     </motion.div>
                 </div>
 
-                {/* 2. Baby / NPO Message (Memoji Left) */}
+                {/* initial baby phae release card */}
                 <div className="baby-container">
                     <motion.div
                         className="avatar-container"

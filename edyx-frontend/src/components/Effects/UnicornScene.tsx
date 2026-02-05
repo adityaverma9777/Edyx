@@ -11,7 +11,7 @@ declare global {
 
 const UnicornScene: React.FC = () => {
     useEffect(() => {
-        // Check if script is already loaded
+
         const scriptId = 'unicorn-studio-script';
         const existingScript = document.getElementById(scriptId);
 
@@ -27,13 +27,13 @@ const UnicornScene: React.FC = () => {
             };
             document.body.appendChild(script);
         } else {
-            // If script exists, just re-init in case
+            
             if (window.UnicornStudio) {
                 window.UnicornStudio.init();
             }
         }
 
-        // Cleanup not strictly necessary for singleton global, but good practice to allow cleaning if library supported it.
+        
     }, []);
 
     return (
@@ -46,7 +46,7 @@ const UnicornScene: React.FC = () => {
                 width: '100%',
                 height: '100%',
                 zIndex: 0,
-                pointerEvents: 'none' // Allow clicks to pass through to text/cards? Or is it background? User said "add a web gl animated scene". Usually background.
+                pointerEvents: 'none' 
             }}
         ></div>
     );

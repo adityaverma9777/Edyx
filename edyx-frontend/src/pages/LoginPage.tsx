@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
     };
 
     const handleEmailChange = (email: string) => {
-        // Simple regex to check for valid email format
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         setIsValid(emailRegex.test(email));
     };
@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
         <Layout>
             <div className="login-page">
                 <div className="login-split-card">
-                    {/* Left Side: Form */}
+
                     <div className="login-left">
                         <OtpLogin
                             onLoginSuccess={handleLoginSuccess}
@@ -44,7 +44,7 @@ const LoginPage: React.FC = () => {
                         />
                     </div>
 
-                    {/* Right Side: Emoji */}
+
                     <div className="login-right">
                         <div className="emoji-wrapper">
                             <InteractiveEmoji

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Settings, GitCommit, ExternalLink } from 'lucide-react';
+import { Mail, Settings, GitCommit, ExternalLink, ArrowLeft } from 'lucide-react';
+import Footer from '../components/Layout/Footer';
 
 interface Commit {
     sha: string;
@@ -15,6 +17,7 @@ interface Commit {
 }
 
 const DevelopersPage: React.FC = () => {
+    const navigate = useNavigate();
     const [commits, setCommits] = useState<Commit[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -59,10 +62,10 @@ const DevelopersPage: React.FC = () => {
 
     return (
         <div className="developers-page">
-            {/* Tech Grid Background */}
+
             <div className="tech-grid"></div>
 
-            {/* Floating Binary/Hex Particles */}
+
             <div className="code-particles">
                 {[...Array(20)].map((_, i) => (
                     <motion.div
@@ -115,7 +118,6 @@ const DevelopersPage: React.FC = () => {
                 ))}
             </div>
 
-            {/* Background Gears Animation */}
             <div className="gears-container">
                 <motion.div
                     className="gear large-gear"
@@ -138,6 +140,13 @@ const DevelopersPage: React.FC = () => {
                 >
                     <Settings size={200} strokeWidth={0.5} opacity={0.06} />
                 </motion.div>
+            </div>
+
+            <div className="back-btn-container">
+                <button onClick={() => navigate('/')} className="back-home-btn">
+                    <ArrowLeft size={20} />
+                    <span>Back to Home</span>
+                </button>
             </div>
 
             <div className="content-container">
@@ -259,7 +268,40 @@ const DevelopersPage: React.FC = () => {
                 </section>
             </div>
 
+            <Footer />
+
             <style>{`
+        .back-btn-container {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 100;
+        }
+
+        .back-home-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .back-home-btn:hover {
+            transform: translateX(-4px);
+            background: white;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            color: #111;
+        }
+
         .developers-page {
           min-height: 100vh;
           background: #f8f9fa; /* Slightly cooler grey */

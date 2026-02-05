@@ -22,10 +22,10 @@ const PhoneMockup: React.FC = () => {
     <section className="mockup-section">
       <div className="mockup-container">
 
-        {/* Background Glow */}
+
         <div className="glow-bg"></div>
 
-        {/* Left Phone (Chat UI) */}
+
         <motion.div
           className="phone-frame left"
           initial={{ opacity: 0, x: -50 }}
@@ -52,7 +52,7 @@ const PhoneMockup: React.FC = () => {
               <div className="avatar-xs"></div>
             </div>
 
-            {/* Animated Chat Sequence */}
+
             <div className="chat-area-mock">
               <motion.div
                 className="chat-bubble user"
@@ -87,7 +87,7 @@ const PhoneMockup: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Right Phone (Dashboard UI) */}
+
         <motion.div
           className="phone-frame right"
           initial={{ opacity: 0, x: 50 }}

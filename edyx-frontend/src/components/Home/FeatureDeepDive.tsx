@@ -7,7 +7,7 @@ const FeatureDeepDive: React.FC = () => {
         <section className="deep-dive-section" id="features">
             <div className="container">
 
-                {/* Row 1: Zero Friction */}
+                {/* Zero Friction */}
                 <div className="feature-row">
                     <div className="feature-text">
                         <div className="icon-box blue"><Zap size={24} /></div>
@@ -25,7 +25,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Visual: Simulated Login Flow */}
+                            {/* Simulated Login Flow */}
                             <motion.div
                                 className="login-sim"
                                 initial={{ opacity: 0, y: 20 }}
@@ -56,7 +56,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Row 2: FAST Model (Qwen) - Reverse */}
+                {/* FAST */}
                 <div className="feature-row reverse">
                     <div className="feature-text">
                         <div className="icon-box yellow"><Zap size={24} /></div>
@@ -74,7 +74,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Visual: Speedometer / Lightning */}
+
                             <div className="speed-visual">
                                 <motion.div
                                     className="bolt-container"
@@ -101,7 +101,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Row 3: CONVO Model (TinyLlama) */}
+                {/*CONVO */}
                 <div className="feature-row">
                     <div className="feature-text">
                         <div className="icon-box green"><MessageCircle size={24} /></div>
@@ -119,7 +119,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Visual: Chat Bubbles */}
+
                             <div className="chat-visual">
                                 <motion.div className="chat-blob agent"
                                     initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ type: 'spring' }}
@@ -135,7 +135,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Row 4: BALANCED Model (Deep Reasoner) - Reverse */}
+                {/* BALANCED */}
                 <div className="feature-row reverse">
                     <div className="feature-text">
                         <div className="icon-box purple"><Cpu size={24} /></div>
@@ -153,7 +153,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Visual: Thinking Brain / Network */}
+
                             <div className="brain-visual">
                                 <div className="brain-circle center"></div>
                                 <div className="brain-orbit">
@@ -170,7 +170,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Row 5: Uncapped Potential (Growth) */}
+
                 <div className="feature-row">
                     <div className="feature-text">
                         <div className="icon-box purple"><InfinityIcon size={24} /></div>
@@ -188,7 +188,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Visual: Rising Graph */}
+
                             <div className="graph-container">
                                 <svg viewBox="0 0 200 100" className="growth-chart">
                                     <defs>
@@ -227,7 +227,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Row 6: Sovereign Infrastructure (Reverse) */}
+
                 <div className="feature-row reverse">
                     <div className="feature-text">
                         <div className="icon-box dark"><Server size={24} /></div>
@@ -245,7 +245,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Visual: Server Node */}
+
                             <div className="server-visual">
                                 <div className="server-box">
                                     <div className="blink-light"></div>
@@ -263,7 +263,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Row 7: Bank-Grade Security */}
+
                 <div className="feature-row">
                     <div className="feature-text">
                         <div className="icon-box red"><Shield size={24} /></div>
@@ -281,7 +281,7 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Visual: Shield Animation */}
+
                             <div className="security-mock">
                                 <motion.div
                                     className="shield-icon"

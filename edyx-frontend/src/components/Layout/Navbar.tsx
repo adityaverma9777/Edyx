@@ -12,14 +12,14 @@ const Navbar: React.FC = () => {
       setScrolled(window.scrollY > 20);
     };
 
-    // Check auth status
+
     const checkAuth = () => {
       const token = localStorage.getItem("authToken");
       setIsLoggedIn(!!token);
     };
     checkAuth();
 
-    // Listen for storage changes (for multi-tab sync or login updates)
+
     window.addEventListener("storage", checkAuth);
     window.addEventListener("scroll", handleScroll);
 
@@ -37,12 +37,12 @@ const Navbar: React.FC = () => {
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // For regular routes like /docs, don't intercept
+
     if (!href.includes("#")) {
       return;
     }
 
-    // For hash links
+
     const targetId = href.replace(/^.*#/, "");
     const element = document.getElementById(targetId);
 
@@ -50,10 +50,7 @@ const Navbar: React.FC = () => {
       e.preventDefault();
       element.scrollIntoView({ behavior: "smooth" });
     } else {
-      // If target ID missing (maybe on another page), let default happen or force nav
-      // Default behavior of <a href="/#features"> acts as nav if not on same page logic? 
-      // But if we are on /docs and click /#features, simple <a> tag works.
-      // So actually, we only need to preventDefault IF we successfully found the element to scroll to.
+
     }
   };
 
@@ -74,7 +71,7 @@ const Navbar: React.FC = () => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="nav-content">
-          {/* Logo */}
+
           <div className="logo-section" onClick={() => window.location.href = "/"}>
             <div className="logo-bg">
               <img src="/edyx-logo-white.png" alt="Edyx" className="logo-icon-img" />
@@ -82,7 +79,6 @@ const Navbar: React.FC = () => {
             <span className="logo-text">Edyx</span>
           </div>
 
-          {/* Desktop Links */}
           <div className="desktop-links">
             {navLinks.map((link) => (
               <a
@@ -96,13 +92,13 @@ const Navbar: React.FC = () => {
             ))}
           </div>
 
-          {/* Actions */}
+
           <div className="nav-actions">
             <button className="cta-btn" onClick={handleAuthAction}>
               {isLoggedIn ? "Dashboard" : "Log in"}
             </button>
 
-            {/* Mobile Toggle */}
+
             <button
               className="mobile-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -113,7 +109,7 @@ const Navbar: React.FC = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu Overlay */}
+
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

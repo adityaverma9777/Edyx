@@ -3,9 +3,7 @@ import { useRef, Suspense } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 
-// --- SHADERS ---
 
-// 1. Waving Flag Shader (Texture Based)
 const FlagShader = {
   uniforms: {
     uTime: { value: 0 },
@@ -43,7 +41,7 @@ const FlagShader = {
   `
 };
 
-// 2. Earth Shader (Procedural)
+
 const EarthShader = {
   uniforms: {
     uTime: { value: 0 },
@@ -135,7 +133,7 @@ const EarthShader = {
   `
 }
 
-// --- COMPONENTS ---
+
 
 const FlagMesh = () => {
   const meshRef = useRef<THREE.Mesh>(null);
