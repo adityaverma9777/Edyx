@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
           <div className="link-column">
             <h4>Platform</h4>
             <a href="/dashboard">Dashboard</a>
-            <a href="https://www.adityavermaworks.in/" target="_blank" rel="noreferrer">Developer</a>
+            <a href="/developers">Developers</a>
             <a href="/docs">API Docs</a>
           </div>
           <div className="link-column">
