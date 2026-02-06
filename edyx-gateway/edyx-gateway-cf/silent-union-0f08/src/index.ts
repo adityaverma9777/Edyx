@@ -11,13 +11,15 @@ interface ApiKeyData {
 interface ChatRequest {
   model: string;
   messages: Array<{ role: string; content: string }>;
+  top_k?: number;
+  max_tokens?: number;
 }
 
 const MODEL_ENDPOINTS: Record<string, string> = {
   convo: "https://edyxapi-convo-model.hf.space/v1/chat",
   balanced: "https://edyxapi-edyx-llama-balanced.hf.space/v1/chat",
   fast: "https://edyxapi-edyx-qwen-fast.hf.space/v1/chat",
-  physics: "https://edyxapi-edyx-phy.hf.space/v1/chat",
+  physics: "https://edyxapi-edyx-phy.hf.space/v1/query",
 };
 
 const CORS_HEADERS = {
@@ -143,18 +145,51 @@ export default {
 
 
     try {
-      const hfResp = await fetch(target, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: body.messages }),
-      });
+      let hfResp;
 
-      const responseBody = await hfResp.text();
+      if (requestedModel === "physics") {
+        const userMessage = body.messages.find((m) => m.role === "user");
+        const question = userMessage?.content || "";
 
-      return new Response(responseBody, {
-        status: hfResp.status,
-        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
-      });
+        hfResp = await fetch(target, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            question,
+            top_k: body.top_k || 5,
+            max_tokens: body.max_tokens || 512,
+          }),
+        });
+
+        if (!hfResp.ok) {
+          const errorText = await hfResp.text();
+          return jsonError(hfResp.status, `Model error: ${errorText}`);
+        }
+
+        const data = await hfResp.json() as any;
+        return jsonSuccess({
+          choices: [{
+            message: {
+              role: "assistant",
+              content: data.answer || data.text || JSON.stringify(data)
+            }
+          }],
+          sources_used: data.sources_used || 0
+        });
+      } else {
+        hfResp = await fetch(target, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: body.messages }),
+        });
+
+        const responseBody = await hfResp.text();
+
+        return new Response(responseBody, {
+          status: hfResp.status,
+          headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+        });
+      }
     } catch (err) {
       return jsonError(502, `Failed to reach model endpoint: ${err}`);
     }

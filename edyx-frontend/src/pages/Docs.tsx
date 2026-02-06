@@ -140,23 +140,22 @@ const Docs: React.FC = () => {
                                 </pre>
                             </div>
 
-                            <h3>Edyx-Physics API (Different Endpoint)</h3>
-                            <p>The Physics model uses a specialized retrieval-augmented endpoint for scientific queries.</p>
-
-                            <div className="api-details">
-                                <div className="endpoint-badge">POST</div>
-                                <code className="endpoint-url">https://edyxapi-edyx-phy.hf.space/v1/query</code>
-                            </div>
+                            <h3>Edyx-Physics API</h3>
+                            <p>The Physics model uses the same endpoint as other models. It supports additional parameters: <code>top_k</code> (number of sources to retrieve) and returns <code>sources_used</code> in the response.</p>
 
                             <div className="code-block">
                                 <div className="code-header">
                                     <span>Physics API - cURL Example</span>
                                 </div>
                                 <pre>
-                                    {`curl -X POST https://edyxapi-edyx-phy.hf.space/v1/query \\
+                                    {`curl -X POST https://edyx-backend.onrender.com/chat \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "question": "What is Newton's second law of motion?",
+    "model": "physics",
+    "messages": [
+      {"role": "user", "content": "What is Newton'\\''s second law of motion?"}
+    ],
     "top_k": 5,
     "max_tokens": 512
   }'`}
@@ -167,7 +166,14 @@ const Docs: React.FC = () => {
                             <div className="code-block">
                                 <pre>
                                     {`{
-  "answer": "Newton's second law states that F = ma...",
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "Newton's second law states that F = ma..."
+      }
+    }
+  ],
   "sources_used": 5
 }`}
                                 </pre>

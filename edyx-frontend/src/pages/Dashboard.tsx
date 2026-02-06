@@ -864,28 +864,48 @@ const CodeTabs = ({ modelId }: { modelId: string }) => {
     const isPhysics = modelId === 'physics';
 
     const physicsSnippets = {
-        curl: `curl -X POST https://edyxapi-edyx-phy.hf.space/v1/query \\
+        curl: `curl -X POST https://edyx-backend.onrender.com/chat \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "question": "What is Newton'\\''s second law of motion?",
+    "model": "physics",
+    "messages": [
+      {"role": "user", "content": "What is Newton'\\''s second law of motion?"}
+    ],
     "top_k": 5,
     "max_tokens": 512
   }'`,
-        powershell: `$body = @{
-    question = "What is Newton's second law of motion?"
+        powershell: `$apiKey = "YOUR_API_KEY"
+$headers = @{
+    "Authorization" = "Bearer $apiKey"
+    "Content-Type"  = "application/json"
+}
+
+$body = @{
+    model = "physics"
+    messages = @(
+        @{ role = "user"; content = "What is Newton's second law of motion?" }
+    )
     top_k = 5
     max_tokens = 512
-} | ConvertTo-Json
+} | ConvertTo-Json -Depth 4
 
-$response = Invoke-RestMethod -Uri "https://edyxapi-edyx-phy.hf.space/v1/query" -Method POST -Headers @{"Content-Type"="application/json"} -Body $body
+$response = Invoke-RestMethod -Uri "https://edyx-backend.onrender.com/chat" -Method POST -Headers $headers -Body $body
 
 $response | ConvertTo-Json -Depth 10 | Out-String -Width 4096`,
         python: `import requests
 
-url = "https://edyxapi-edyx-phy.hf.space/v1/query"
-headers = {"Content-Type": "application/json"}
+api_key = "YOUR_API_KEY"
+url = "https://edyx-backend.onrender.com/chat"
+headers = {
+    "Authorization": f"Bearer {api_key}",
+    "Content-Type": "application/json"
+}
 data = {
-    "question": "What is Newton's second law of motion?",
+    "model": "physics",
+    "messages": [
+        {"role": "user", "content": "What is Newton's second law of motion?"}
+    ],
     "top_k": 5,
     "max_tokens": 512
 }
@@ -893,13 +913,20 @@ data = {
 response = requests.post(url, headers=headers, json=data)
 print(response.json())`,
         node: `const fetch = require('node-fetch');
+const apiKey = "YOUR_API_KEY";
 
 async function queryPhysics() {
-  const response = await fetch("https://edyxapi-edyx-phy.hf.space/v1/query", {
+  const response = await fetch("https://edyx-backend.onrender.com/chat", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Authorization": \`Bearer \${apiKey}\`,
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
-      question: "What is Newton's second law of motion?",
+      model: "physics",
+      messages: [
+        { role: "user", content: "What is Newton's second law of motion?" }
+      ],
       top_k: 5,
       max_tokens: 512
     })

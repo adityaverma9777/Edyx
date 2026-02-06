@@ -7,10 +7,9 @@ const MODEL_ENDPOINTS: Record<string, string> = {
     convo: "https://edyxapi-convo-model.hf.space/v1/chat",
     balanced: "https://edyxapi-edyx-llama-balanced.hf.space/v1/chat",
     fast: "https://edyxapi-edyx-qwen-fast.hf.space/v1/chat",
-    physics: "https://edyxapi-edyx-phy.hf.space/v1/chat",
+    physics: "https://edyxapi-edyx-phy.hf.space/v1/query",
 };
 
-// Protected Chat Endpoint 
 router.post("/", async (req: Request, res: Response) => {
     try {
         const authHeader = req.headers.authorization;
@@ -51,15 +50,32 @@ router.post("/", async (req: Request, res: Response) => {
         }
 
         const start = Date.now();
-        const hfResponse = await fetch(targetUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                messages,
-                max_tokens: req.body.max_tokens || 4096,
-                temperature: req.body.temperature || 0.7
-            }),
-        });
+        let hfResponse;
+
+        if (model === "physics") {
+            const userMessage = messages.find((m: any) => m.role === "user");
+            const question = userMessage?.content || "";
+
+            hfResponse = await fetch(targetUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    question,
+                    top_k: req.body.top_k || 5,
+                    max_tokens: req.body.max_tokens || 512
+                }),
+            });
+        } else {
+            hfResponse = await fetch(targetUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages,
+                    max_tokens: req.body.max_tokens || 4096,
+                    temperature: req.body.temperature || 0.7
+                }),
+            });
+        }
 
         if (!hfResponse.ok) {
             const err = await hfResponse.text();
@@ -81,7 +97,19 @@ router.post("/", async (req: Request, res: Response) => {
             if (error) console.error("Failed to track usage:", error);
         });
 
-        res.json(data);
+        if (model === "physics") {
+            res.json({
+                choices: [{
+                    message: {
+                        role: "assistant",
+                        content: data.answer || data.text || JSON.stringify(data)
+                    }
+                }],
+                sources_used: data.sources_used || 0
+            });
+        } else {
+            res.json(data);
+        }
 
     } catch (error) {
         console.error("Chat Error:", error);
