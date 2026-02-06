@@ -135,7 +135,43 @@ router.post("/demo", async (req: Request, res: Response) => {
         }
 
 
-        const hfResponse = await fetch(targetUrl, {
+        let hfResponse;
+
+        if (model === "physics") {
+            const userMessage = messages.find((m: any) => m.role === "user");
+            const question = userMessage?.content || "";
+
+            hfResponse = await fetch(targetUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    question,
+                    top_k: 5,
+                    max_tokens: 1024
+                }),
+            });
+
+            if (!hfResponse.ok) {
+                const errorText = await hfResponse.text();
+                console.error("HF Error:", errorText);
+                res.status(hfResponse.status).json({ error: "Model service error" });
+                return;
+            }
+
+            const data = await hfResponse.json();
+            res.json({
+                choices: [{
+                    message: {
+                        role: "assistant",
+                        content: data.answer || data.text || JSON.stringify(data)
+                    }
+                }],
+                sources_used: data.sources_used || 0
+            });
+            return;
+        }
+
+        hfResponse = await fetch(targetUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

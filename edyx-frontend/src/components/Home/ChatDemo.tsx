@@ -6,6 +6,7 @@ const MODELS = [
   { id: "convo", name: "Convo 2.0", desc: "Complex Reasoning", color: "#dd7a83" },
   { id: "balanced", name: "Balanced", desc: "General Purpose", color: "#A855F7" },
   { id: "fast", name: "Fast", desc: "Instant Replies", color: "#3B82F6" },
+  { id: "physics", name: "Physics", desc: "Scientific Q&A", color: "#06b6d4" },
 ];
 
 const INITIAL_MESSAGES = [
