@@ -153,7 +153,10 @@ export default {
 
         hfResp = await fetch(target, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "X-Edyx-Token": "edyx-secret-key-v1"
+          },
           body: JSON.stringify({
             question,
             top_k: body.top_k || 5,
@@ -179,7 +182,10 @@ export default {
       } else {
         hfResp = await fetch(target, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "X-Edyx-Token": "edyx-secret-key-v1"
+          },
           body: JSON.stringify({ messages: body.messages }),
         });
 

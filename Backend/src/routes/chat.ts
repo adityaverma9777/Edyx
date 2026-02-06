@@ -58,7 +58,10 @@ router.post("/", async (req: Request, res: Response) => {
 
             hfResponse = await fetch(targetUrl, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
+                },
                 body: JSON.stringify({
                     question,
                     top_k: req.body.top_k || 5,
@@ -68,7 +71,10 @@ router.post("/", async (req: Request, res: Response) => {
         } else {
             hfResponse = await fetch(targetUrl, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
+                },
                 body: JSON.stringify({
                     messages,
                     max_tokens: req.body.max_tokens || 4096,
@@ -143,7 +149,10 @@ router.post("/demo", async (req: Request, res: Response) => {
 
             hfResponse = await fetch(targetUrl, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
+                },
                 body: JSON.stringify({
                     question,
                     top_k: 5,
@@ -173,7 +182,10 @@ router.post("/demo", async (req: Request, res: Response) => {
 
         hfResponse = await fetch(targetUrl, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
+            },
             body: JSON.stringify({
                 messages,
                 max_tokens: 4096,
