@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Shield, Zap, Lock, Infinity as InfinityIcon, Cpu, MessageCircle, Server, Rocket, Sparkles, Hand } from "lucide-react";
+import { Shield, Zap, Lock, Infinity as InfinityIcon, Cpu, MessageCircle, Server, Rocket, Sparkles, Hand, Atom } from "lucide-react";
 
 const FeatureDeepDive: React.FC = () => {
     return (
@@ -25,7 +25,6 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-                            {/* Simulated Login Flow */}
                             <motion.div
                                 className="login-sim"
                                 initial={{ opacity: 0, y: 20 }}
@@ -56,8 +55,58 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* FAST */}
+                {/* Edyx-Physics - Reversed */}
                 <div className="feature-row reverse">
+                    <div className="feature-text">
+                        <div className="icon-box cyan"><Atom size={24} /></div>
+                        <h2>Edyx-Physics.</h2>
+                        <p>
+                            <strong>Edyx-Physics</strong> is a retrieval-grounded scientific reasoning system powered by a <strong>630M-parameter Qwen language model</strong> and a <strong>large-scale physics vector index</strong>.
+                            It combines broad knowledge formatting with precise, indexed data retrieval.
+                        </p>
+                        <ul className="feature-list">
+                            <li>• Large-Scale Physics Vector Index</li>
+                            <li>• Retrieval-Grounded Reasoning</li>
+                            <li>• Scientific Precision</li>
+                        </ul>
+                    </div>
+                    <div className="feature-visual">
+                        <div className="visual-card">
+                            <div className="vector-network">
+                                <svg viewBox="0 0 200 200" className="network-svg">
+                                    <defs>
+                                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.2" />
+                                            <stop offset="50%" stopColor="#22d3ee" stopOpacity="0.8" />
+                                            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.2" />
+                                        </linearGradient>
+                                    </defs>
+                                    {/* Connections */}
+                                    <motion.line x1="100" y1="100" x2="50" y2="40" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.2 }} />
+                                    <motion.line x1="100" y1="100" x2="150" y2="40" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.3 }} />
+                                    <motion.line x1="100" y1="100" x2="30" y2="100" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.4 }} />
+                                    <motion.line x1="100" y1="100" x2="170" y2="100" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.5 }} />
+                                    <motion.line x1="100" y1="100" x2="50" y2="160" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.6 }} />
+                                    <motion.line x1="100" y1="100" x2="150" y2="160" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.7 }} />
+                                    {/* Outer Nodes */}
+                                    <motion.circle cx="50" cy="40" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0 }} />
+                                    <motion.circle cx="150" cy="40" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }} />
+                                    <motion.circle cx="30" cy="100" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }} />
+                                    <motion.circle cx="170" cy="100" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.9 }} />
+                                    <motion.circle cx="50" cy="160" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 1.2 }} />
+                                    <motion.circle cx="150" cy="160" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 1.5 }} />
+                                    {/* Central Core */}
+                                    <motion.circle cx="100" cy="100" r="16" fill="#0891b2" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
+                                    <circle cx="100" cy="100" r="24" fill="none" stroke="#06b6d4" strokeWidth="1" opacity="0.4" />
+                                    <circle cx="100" cy="100" r="32" fill="none" stroke="#06b6d4" strokeWidth="1" opacity="0.2" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* FAST (Normal) */}
+                <div className="feature-row">
                     <div className="feature-text">
                         <div className="icon-box yellow"><Zap size={24} /></div>
                         <h2>Lightning Fast.</h2>
@@ -74,7 +123,6 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-
                             <div className="speed-visual">
                                 <motion.div
                                     className="bolt-container"
@@ -101,8 +149,8 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/*CONVO */}
-                <div className="feature-row">
+                {/*CONVO (Reversed) */}
+                <div className="feature-row reverse">
                     <div className="feature-text">
                         <div className="icon-box green"><MessageCircle size={24} /></div>
                         <h2>Natural Conversation.</h2>
@@ -119,7 +167,6 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-
                             <div className="chat-visual">
                                 <motion.div className="chat-blob agent"
                                     initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ type: 'spring' }}
@@ -135,8 +182,8 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                 </div>
 
-                {/* BALANCED */}
-                <div className="feature-row reverse">
+                {/* BALANCED (Normal) */}
+                <div className="feature-row">
                     <div className="feature-text">
                         <div className="icon-box purple"><Cpu size={24} /></div>
                         <h2>Deep Reasoning.</h2>
@@ -153,7 +200,6 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-
                             <div className="brain-visual">
                                 <div className="brain-circle center"></div>
                                 <div className="brain-orbit">
@@ -171,7 +217,8 @@ const FeatureDeepDive: React.FC = () => {
                 </div>
 
 
-                <div className="feature-row">
+                {/* Uncapped Potential (Reversed) */}
+                <div className="feature-row reverse">
                     <div className="feature-text">
                         <div className="icon-box purple"><InfinityIcon size={24} /></div>
                         <h2>Uncapped Potential.</h2>
@@ -188,7 +235,6 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-
                             <div className="graph-container">
                                 <svg viewBox="0 0 200 100" className="growth-chart">
                                     <defs>
@@ -228,7 +274,8 @@ const FeatureDeepDive: React.FC = () => {
                 </div>
 
 
-                <div className="feature-row reverse">
+                {/* Sovereign Infrastructure (Normal) */}
+                <div className="feature-row">
                     <div className="feature-text">
                         <div className="icon-box dark"><Server size={24} /></div>
                         <h2>Sovereign Infrastructure.</h2>
@@ -245,7 +292,6 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-
                             <div className="server-visual">
                                 <div className="server-box">
                                     <div className="blink-light"></div>
@@ -264,7 +310,8 @@ const FeatureDeepDive: React.FC = () => {
                 </div>
 
 
-                <div className="feature-row">
+                {/* Bank-Grade Security (Reversed) */}
+                <div className="feature-row reverse">
                     <div className="feature-text">
                         <div className="icon-box red"><Shield size={24} /></div>
                         <h2>Bank-Grade Security.</h2>
@@ -281,7 +328,6 @@ const FeatureDeepDive: React.FC = () => {
                     </div>
                     <div className="feature-visual">
                         <div className="visual-card">
-
                             <div className="security-mock">
                                 <motion.div
                                     className="shield-icon"
@@ -347,6 +393,7 @@ const FeatureDeepDive: React.FC = () => {
         .icon-box.yellow { background: linear-gradient(135deg, #F59E0B, #FBBF24); }
         .icon-box.green { background: linear-gradient(135deg, #10B981, #34D399); }
         .icon-box.dark { background: linear-gradient(135deg, #333, #000); }
+        .icon-box.cyan { background: linear-gradient(135deg, #06b6d4, #0891b2); }
 
         .feature-text h2 {
            font-size: 2.5rem;
@@ -392,6 +439,16 @@ const FeatureDeepDive: React.FC = () => {
            justify-content: center;
            overflow: hidden;
            position: relative;
+        }
+
+        /* Vector Network Visual */
+        .vector-network {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .network-svg {
+            width: 200px; height: 200px;
+            overflow: visible;
         }
 
         /* Login Sim */

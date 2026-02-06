@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Unlock, ShieldCheck, BarChart3, Cloud } from "lucide-react";
+import { Unlock, ShieldCheck, BarChart3, Cloud, Atom } from "lucide-react";
 
 const features = [
   {
@@ -26,6 +26,12 @@ const features = [
     title: "Multi-Model API",
     desc: "Switch between Convo, Balanced, and Fast models with a single parameter.",
     delay: 0.3
+  },
+  {
+    icon: <Atom size={24} />,
+    title: "Edyx-Physics",
+    desc: "Retrieval-grounded scientific reasoning system with a large-scale physics vector index.",
+    delay: 0.4
   }
 ];
 

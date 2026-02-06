@@ -1,5 +1,5 @@
 import React from "react";
-import { Gauge, MessageSquare, Zap } from "lucide-react";
+import { Gauge, MessageSquare, Zap, Atom } from "lucide-react";
 
 const models = [
   {
@@ -9,7 +9,7 @@ const models = [
     desc: "Instant replies for chatbots.",
     latency: "~5s",
     useCase: "Chatbots, Simple Queries",
-    color: "#eab308", 
+    color: "#eab308",
     highlight: false
   },
   {
@@ -19,8 +19,8 @@ const models = [
     desc: "Best model. Most smart.",
     latency: "~60s",
     useCase: "Complex Reasoning, Best Results",
-    color: "#3b82f6", 
-    highlight: true 
+    color: "#3b82f6",
+    highlight: false
   },
   {
     id: "convo",
@@ -29,7 +29,17 @@ const models = [
     desc: "Trained for conversations.",
     latency: "~25s",
     useCase: "Natural Chat, Long Context",
-    color: "#ec4899", 
+    color: "#ec4899",
+    highlight: false
+  },
+  {
+    id: "physics",
+    name: "Edyx-Physics",
+    icon: <Atom size={24} />,
+    desc: "Scientific reasoning with vector index.",
+    latency: "~15s",
+    useCase: "Physics, Scientific Queries",
+    color: "#06b6d4",
     highlight: false
   }
 ];
@@ -38,7 +48,7 @@ const ModelCompare: React.FC = () => {
   return (
     <section id="models" className="models-section">
       <div className="section-header">
-        <h2 className="section-title">Three brains. One API.</h2>
+        <h2 className="section-title">Four brains. One API.</h2>
         <p className="section-subtitle">Choose the right intelligence for every task.</p>
       </div>
 
@@ -83,9 +93,13 @@ const ModelCompare: React.FC = () => {
             z-index: 2;
         }
 
+        .section-header {
+            margin-bottom: 60px;
+        }
+
         .models-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           gap: 24px;
           align-items: center;
         }

@@ -17,6 +17,7 @@ const MODEL_ENDPOINTS: Record<string, string> = {
   convo: "https://edyxapi-convo-model.hf.space/v1/chat",
   balanced: "https://edyxapi-edyx-llama-balanced.hf.space/v1/chat",
   fast: "https://edyxapi-edyx-qwen-fast.hf.space/v1/chat",
+  physics: "https://edyxapi-edyx-phy.hf.space/v1/chat",
 };
 
 const CORS_HEADERS = {

@@ -3,12 +3,12 @@ import Layout from '../components/Layout/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Cpu, Zap, MessageSquare, ArrowLeft, Key,
-    BarChart2, FileText, Plus, Trash2, Copy, Check
+    BarChart2, FileText, Plus, Trash2, Copy, Check, Atom
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
-type ModelType = 'fast' | 'balanced' | 'convo';
+type ModelType = 'fast' | 'balanced' | 'convo' | 'physics';
 
 interface ApiKey {
     id: string;
@@ -26,21 +26,28 @@ const MODELS = [
         name: 'Fast',
         description: 'Response time: ~5 seconds. Optimized for chatbots and simple queries.',
         icon: Zap,
-        color: '#eab308' 
+        color: '#eab308'
     },
     {
         id: 'balanced' as ModelType,
         name: 'Balanced',
         description: 'Response time: ~60 seconds. Best model, most smart. Ideal for complex reasoning.',
         icon: Cpu,
-        color: '#3b82f6' 
+        color: '#3b82f6'
     },
     {
         id: 'convo' as ModelType,
         name: 'Convo',
         description: 'Response time: ~25 seconds. Trained specifically for natural, engaging conversations.',
         icon: MessageSquare,
-        color: '#ec4899' 
+        color: '#ec4899'
+    },
+    {
+        id: 'physics' as ModelType,
+        name: 'Edyx-Physics',
+        description: 'Response time: ~15 seconds. Scientific reasoning with large-scale physics vector index.',
+        icon: Atom,
+        color: '#06b6d4'
     }
 ];
 
@@ -101,11 +108,11 @@ const Dashboard: React.FC = () => {
             const data = await res.json();
 
             if (res.ok) {
-                setGeneratedKey(data.api_key); 
-                fetchKeys(); 
+                setGeneratedKey(data.api_key);
+                fetchKeys();
                 setNewKeyName('');
             } else {
-                alert(data.error || "Failed to create key"); 
+                alert(data.error || "Failed to create key");
             }
         } catch (error) {
             console.error("Failed to create key", error);
@@ -345,7 +352,7 @@ const Dashboard: React.FC = () => {
                             <div className="stats-grid">
                                 <StatCard label="Total Requests" value={totalRequests.toLocaleString()} change="Real-time" />
                                 <StatCard label="Tokens Used" value={(totalTokens / 1000).toFixed(1) + 'k'} change="Real-time" />
-                                <StatCard label="Avg Latency" value={model.id === 'fast' ? '~5s' : model.id === 'convo' ? '~25s' : '~60s'} change="Est." good />
+                                <StatCard label="Avg Latency" value={model.id === 'fast' ? '~5s' : model.id === 'convo' ? '~25s' : model.id === 'physics' ? '~15s' : '~60s'} change="Est." good />
                             </div>
 
                             <div className="chart-section" style={{ background: 'white', padding: '32px', borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
