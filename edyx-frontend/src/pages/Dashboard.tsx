@@ -861,7 +861,58 @@ const CustomSelect = ({ options, value, onChange }: { options: { id: string, lab
 const CodeTabs = ({ modelId }: { modelId: string }) => {
     const [lang, setLang] = useState<'curl' | 'powershell' | 'python' | 'node'>('curl');
 
-    const snippets = {
+    const isPhysics = modelId === 'physics';
+
+    const physicsSnippets = {
+        curl: `curl -X POST https://edyxapi-edyx-phy.hf.space/v1/query \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "question": "What is Newton'\\''s second law of motion?",
+    "top_k": 5,
+    "max_tokens": 512
+  }'`,
+        powershell: `$body = @{
+    question = "What is Newton's second law of motion?"
+    top_k = 5
+    max_tokens = 512
+} | ConvertTo-Json
+
+$response = Invoke-RestMethod -Uri "https://edyxapi-edyx-phy.hf.space/v1/query" -Method POST -Headers @{"Content-Type"="application/json"} -Body $body
+
+$response | ConvertTo-Json -Depth 10 | Out-String -Width 4096`,
+        python: `import requests
+
+url = "https://edyxapi-edyx-phy.hf.space/v1/query"
+headers = {"Content-Type": "application/json"}
+data = {
+    "question": "What is Newton's second law of motion?",
+    "top_k": 5,
+    "max_tokens": 512
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())`,
+        node: `const fetch = require('node-fetch');
+
+async function queryPhysics() {
+  const response = await fetch("https://edyxapi-edyx-phy.hf.space/v1/query", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      question: "What is Newton's second law of motion?",
+      top_k: 5,
+      max_tokens: 512
+    })
+  });
+
+  const data = await response.json();
+  console.log(data);
+}
+
+queryPhysics();`
+    };
+
+    const chatSnippets = {
         curl: `curl -X POST https://edyx-backend.onrender.com/chat \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
@@ -871,8 +922,8 @@ const CodeTabs = ({ modelId }: { modelId: string }) => {
       {"role": "system", "content": "You are a helpful assistant."},
       {"role": "user", "content": "Hello world!"}
     ],
-    "max_tokens": 512,  // Optional: Set response length
-    "temperature": 0.7  // Optional: Creativity (0-1)
+    "max_tokens": 512,
+    "temperature": 0.7
   }'`,
         powershell: `$apiKey = "YOUR_API_KEY"
 $headers = @{
@@ -886,8 +937,8 @@ $body = @{
         @{ role = "system"; content = "You are a helpful assistant." },
         @{ role = "user"; content = "Hello world!" }
     )
-    max_tokens  = 512 # Optional: Set response length
-    temperature = 0.7 # Optional: Creativity (0-1)
+    max_tokens  = 512
+    temperature = 0.7
 } | ConvertTo-Json -Depth 4
 
 $response = Invoke-RestMethod -Uri "https://edyx-backend.onrender.com/chat" -Method Post -Headers $headers -Body $body
@@ -906,13 +957,13 @@ data = {
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "Hello world!"}
     ],
-    "max_tokens": 2048, # Optional: Increase for longer answers
+    "max_tokens": 2048,
     "temperature": 0.7 
 }
 
 response = requests.post(url, headers=headers, json=data)
 print(response.json())`,
-        node: `const fetch = require('node-fetch'); // or native fetch in Node 18+
+        node: `const fetch = require('node-fetch');
 const apiKey = "YOUR_API_KEY";
 
 async function chat() {
@@ -928,7 +979,7 @@ async function chat() {
         { role: "system", content: "You are a helpful assistant." },
         { role: "user", content: "Hello world!" }
       ],
-      max_tokens: 1024, // Optional: Control length
+      max_tokens: 1024,
       temperature: 0.7
     })
   });
@@ -939,6 +990,8 @@ async function chat() {
 
 chat();`
     };
+
+    const snippets = isPhysics ? physicsSnippets : chatSnippets;
 
     return (
         <div className="code-tabs-container">

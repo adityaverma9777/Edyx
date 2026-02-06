@@ -67,6 +67,15 @@ const Docs: React.FC = () => {
                                 <p>Optimized for ultra-low latency. Based on Qwen architecture, it delivers instant responses for simple queries, classifications, and chat interactions where speed is critical.</p>
                                 <div className="tags"><span className="tag">Low Latency</span> <span className="tag">Real-time</span> <span className="tag">Qwen-based</span></div>
                             </div>
+
+                            <div className="model-card">
+                                <div className="card-header">
+                                    <h3>Edyx-Physics</h3>
+                                    <span className="model-id"><code>model: "physics"</code></span>
+                                </div>
+                                <p>A retrieval-grounded scientific reasoning system powered by a 630M-parameter Qwen model and a large-scale physics vector index. Ideal for physics questions, scientific explanations, and academic research.</p>
+                                <div className="tags"><span className="tag">Scientific</span> <span className="tag">RAG-powered</span> <span className="tag">Physics</span> <span className="tag">Vector Index</span></div>
+                            </div>
                         </section>
 
 
@@ -127,6 +136,39 @@ const Docs: React.FC = () => {
     "completion_tokens": 15,
     "total_tokens": 39
   }
+}`}
+                                </pre>
+                            </div>
+
+                            <h3>Edyx-Physics API (Different Endpoint)</h3>
+                            <p>The Physics model uses a specialized retrieval-augmented endpoint for scientific queries.</p>
+
+                            <div className="api-details">
+                                <div className="endpoint-badge">POST</div>
+                                <code className="endpoint-url">https://edyxapi-edyx-phy.hf.space/v1/query</code>
+                            </div>
+
+                            <div className="code-block">
+                                <div className="code-header">
+                                    <span>Physics API - cURL Example</span>
+                                </div>
+                                <pre>
+                                    {`curl -X POST https://edyxapi-edyx-phy.hf.space/v1/query \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "question": "What is Newton's second law of motion?",
+    "top_k": 5,
+    "max_tokens": 512
+  }'`}
+                                </pre>
+                            </div>
+
+                            <h4>Physics API Response Format</h4>
+                            <div className="code-block">
+                                <pre>
+                                    {`{
+  "answer": "Newton's second law states that F = ma...",
+  "sources_used": 5
 }`}
                                 </pre>
                             </div>
