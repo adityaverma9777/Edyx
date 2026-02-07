@@ -347,7 +347,7 @@ MJ_SENDER_EMAIL=noreply@edyx.in
 CF_ACCOUNT_ID=xxx
 CF_KV_NAMESPACE_ID=xxx
 CF_API_TOKEN=xxx
-EDYX_ACCESS_TOKEN=edyx-secret-key-v1
+EDYX_ACCESS_TOKEN=xxx
 ```
 
 ---
