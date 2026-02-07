@@ -42,6 +42,7 @@ const Footer: React.FC = () => {
           </div>
           <div className="link-column">
             <h4>Contribute</h4>
+            <a href="/about-project">Explore Codebase</a>
             <a href="https://github.com/adityaverma9777/Edyx" target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </div>
