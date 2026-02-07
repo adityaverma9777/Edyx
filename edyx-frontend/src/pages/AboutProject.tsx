@@ -68,6 +68,18 @@ const FileTreeItem = ({ item, onSelect, selectedPath, depth = 0 }: any) => {
 const AboutProject: React.FC = () => {
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState<any>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        // Simple check for mobile screen width
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         if (selectedFile) {
@@ -75,9 +87,27 @@ const AboutProject: React.FC = () => {
         }
     }, [selectedFile]);
 
+    if (isMobile) {
+        return (
+            <div style={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#0d1117',
+                color: '#c9d1d9',
+                padding: '20px',
+                textAlign: 'center',
+                fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif'
+            }}>
+                <p>This page is made for Desktop view only.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="about-project-container">
-            {/* Header */}
+
             <div className="about-header">
                 <button onClick={() => navigate(-1)} className="back-btn">
                     <ArrowLeft size={20} />
@@ -92,7 +122,7 @@ const AboutProject: React.FC = () => {
             </div>
 
             <div className="explorer-layout">
-                {/* LEFT: File Explorer */}
+
                 <div className="panel left-panel">
                     <div className="panel-header">EXPLORER</div>
                     <div className="file-tree-content">
@@ -107,7 +137,7 @@ const AboutProject: React.FC = () => {
                     </div>
                 </div>
 
-                {/* CENTER: Code Viewer */}
+
                 <div className="panel center-panel">
                     <div className="panel-header">
                         {selectedFile ? selectedFile.name : "Select a file to view"}
@@ -128,7 +158,7 @@ const AboutProject: React.FC = () => {
                     </div>
                 </div>
 
-                {/* RIGHT: Explanation */}
+
                 <div className="panel right-panel">
                     <div className="panel-header">
                         <Info size={16} />
