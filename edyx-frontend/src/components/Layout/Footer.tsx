@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, MapPin, Globe, CheckCircle, AlertTriangle, X } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
@@ -10,7 +11,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="edyx-footer">
       <div className="footer-content">
-        {/* LEFT: Branding */}
+
         <div className="footer-brand">
           <img src="/edyx-logo-black.png" alt="Edyx AI" className="footer-logo" />
           <p className="brand-tagline">
@@ -28,7 +29,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* RIGHT: Links & Policy */}
+
         <div className="footer-links">
           <div className="link-column">
             <h4>Platform</h4>
@@ -43,6 +44,7 @@ const Footer: React.FC = () => {
           <div className="link-column">
             <h4>Contribute</h4>
             <a href="/about-project">Explore Codebase</a>
+            <a href="/hall-of-fame">Hall of Fame</a>
             <a href="https://github.com/adityaverma9777/Edyx" target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </div>
@@ -53,10 +55,10 @@ const Footer: React.FC = () => {
         <p className="disclaimer">Response times usage estimates only. Performance varies by environment.</p>
       </div>
 
-      {/* PRIVACY POLICY MODAL */}
-      <AnimatePresence>
-        {isDataModalOpen && (
-          <div className="modal-overlay" onClick={() => setIsDataModalOpen(false)}>
+
+      {isDataModalOpen && createPortal(
+        <AnimatePresence>
+          <div className="footer-modal-overlay" onClick={() => setIsDataModalOpen(false)}>
             <motion.div
               className="policy-modal"
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -64,10 +66,10 @@ const Footer: React.FC = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onClick={e => e.stopPropagation()}
             >
-              <button className="close-btn" onClick={() => setIsDataModalOpen(false)}><X size={20} /></button>
+              <button className="policy-close-btn" onClick={() => setIsDataModalOpen(false)}><X size={20} /></button>
 
-              <div className="modal-header">
-                <Shield size={32} className="modal-icon text-blue" />
+              <div className="policy-header">
+                <Shield size={32} className="policy-icon text-blue" />
                 <h2>Transparency & Trust</h2>
                 <p>We believe in radical transparency. Here is exactly how Edyx operates.</p>
               </div>
@@ -110,15 +112,16 @@ const Footer: React.FC = () => {
                 <strong>📧 Communcation:</strong> We may use your email to send important updates. We will <strong>never</strong> sell your data to third parties.
               </div>
 
-              <div className="modal-footer">
+              <div className="policy-footer">
                 <p>By using Edyx, you agree to these transparent terms.</p>
                 <button className="confirm-btn" onClick={() => setIsDataModalOpen(false)}>Understood</button>
               </div>
 
             </motion.div>
           </div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
 
       <style>{`
         .edyx-footer {
@@ -213,7 +216,7 @@ const Footer: React.FC = () => {
         }
 
         /* MODAL STYLES */
-        .modal-overlay {
+        .footer-modal-overlay {
           position: fixed; inset: 0;
           background: rgba(0,0,0,0.4);
           backdrop-filter: blur(8px);
@@ -224,25 +227,43 @@ const Footer: React.FC = () => {
 
         .policy-modal {
           background: white;
-          width: 100%; max-width: 600px;
+          width: 90%; max-width: 600px;
           border-radius: 24px;
           padding: 40px;
           box-shadow: 0 20px 60px rgba(0,0,0,0.2);
           position: relative;
+          max-height: 85vh;
+          overflow-y: auto;
         }
 
-        .close-btn {
+        @media (max-width: 480px) {
+          .policy-modal {
+            padding: 64px 24px 32px;
+            border-radius: 20px;
+            text-align: center;
+          }
+          .policy-header h2 { font-size: 1.5rem; }
+          .policy-grid { grid-template-columns: 1fr; }
+          .policy-item { 
+            flex-direction: column; 
+            gap: 12px; 
+            align-items: center; 
+            text-align: center;
+          }
+        }
+
+        .policy-close-btn {
           position: absolute; top: 20px; right: 20px;
           background: #f5f5f7; border: none; width: 32px; height: 32px;
           border-radius: 50%; display: flex; align-items: center; justify-content: center;
           cursor: pointer; color: #666; transition: background 0.2s;
         }
-        .close-btn:hover { background: #e5e5e7; color: black; }
+        .policy-close-btn:hover { background: #e5e5e7; color: black; }
 
-        .modal-header { text-align: center; margin-bottom: 32px; }
-        .modal-icon { margin-bottom: 16px; color: #3b82f6; }
-        .modal-header h2 { font-size: 1.8rem; margin-bottom: 8px; color: #1d1d1f; }
-        .modal-header p { color: #666; font-size: 1.05rem; }
+        .policy-header { text-align: center; margin-bottom: 32px; }
+        .policy-icon { margin-bottom: 16px; color: #3b82f6; }
+        .policy-header h2 { font-size: 1.8rem; margin-bottom: 8px; color: #1d1d1f; }
+        .policy-header p { color: #666; font-size: 1.05rem; }
 
         .policy-grid { display: grid; gap: 20px; margin-bottom: 32px; }
         .policy-item { 
@@ -266,8 +287,8 @@ const Footer: React.FC = () => {
           border-radius: 12px; font-size: 0.9rem; color: #166534; margin-bottom: 32px;
         }
 
-        .modal-footer { text-align: center; }
-        .modal-footer p { font-size: 0.85rem; color: #999; margin-bottom: 16px; }
+        .policy-footer { text-align: center; }
+        .policy-footer p { font-size: 0.85rem; color: #999; margin-bottom: 16px; }
         .confirm-btn {
           background: #1d1d1f; color: white; border: none; 
           padding: 14px 40px; border-radius: 100px; font-weight: 600; font-size: 1rem;

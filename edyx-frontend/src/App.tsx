@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Docs from "./pages/Docs";
 import DevelopersPage from "./pages/DevelopersPage";
 import AboutProject from "./pages/AboutProject";
+import HallOfFame from "./pages/HallOfFame";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/docs" element={<Docs />} />
         <Route path="/developers" element={<DevelopersPage />} />
         <Route path="/about-project" element={<AboutProject />} />
+        <Route path="/hall-of-fame" element={<HallOfFame />} />
       </Routes>
     </Router>
   );
