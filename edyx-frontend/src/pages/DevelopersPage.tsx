@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Settings, GitCommit, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Settings, GitCommit, ArrowLeft } from 'lucide-react';
 import Footer from '../components/Layout/Footer';
 
 interface Commit {
@@ -38,27 +38,6 @@ const DevelopersPage: React.FC = () => {
 
         fetchCommits();
     }, []);
-
-    const developers = [
-        {
-            name: "Manika Kutiyal",
-            role: "Product Strategist & UX Architect",
-            description: "The visionary backbone of Edyx. Manika drives the complex brainstorming and product architecture phases, defining the core logic and solving intricate user flow challenges before development begins. She orchestrates the entire platform experience, ensuring our technology solves real-world problems with intuitive elegance.",
-            image: "/assets/manika.webp",
-            portfolio: "https://my-portfolio-five-ashy-95.vercel.app/",
-            email: "kutiyalmanika@gmail.com",
-            align: "left"
-        },
-        {
-            name: "Aditya Verma",
-            role: "Software Architect",
-            description: "The technical executioner of the Edyx ecosystem. Aditya translated the complex product vision into a robust reality, implementing the complete full-stack infrastructure. He engineered the backend systems, middleware, and frontend interfaces to bring the strategic roadmap to life.",
-            image: "/assets/aditya.png",
-            portfolio: "https://www.adityavermaworks.in/",
-            email: "adityaverma9777@gmail.com",
-            align: "right"
-        }
-    ];
 
     return (
         <div className="developers-page">
@@ -162,7 +141,7 @@ const DevelopersPage: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        The Minds Behind Edyx
+                        Evolution Log
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -170,59 +149,9 @@ const DevelopersPage: React.FC = () => {
                         transition={{ delay: 0.2 }}
                         className="subtitle"
                     >
-                        Architecting Intelligence. <span className="highlight">Compiling Future.</span>
+                        Every commit tells a story. <span className="highlight">Here's ours.</span>
                     </motion.p>
                 </header>
-
-                <section className="cards-section">
-                    <div className="cards-grid">
-                        {developers.map((dev, index) => (
-                            <motion.div
-                                key={dev.name}
-                                className={`developer-card ${dev.align}`}
-                                initial={{ opacity: 0, x: dev.align === 'left' ? -50 : 50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.8, delay: index * 0.2 }}
-                                onClick={() => window.open(dev.portfolio, '_blank')}
-                                whileHover={{ y: -10, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.15)" }}
-                            >
-                                <div className="card-image-container">
-                                    <div className="tech-overlay"></div>
-                                    <img src={dev.image} alt={dev.name} className="dev-avatar" />
-                                    <div className="card-overlay">
-                                        <span>View Portfolio</span>
-                                        <ExternalLink size={16} />
-                                    </div>
-                                    <div className="corner-accents">
-                                        <div className="corner c-tl"></div>
-                                        <div className="corner c-br"></div>
-                                    </div>
-                                </div>
-                                <div className="card-content">
-                                    <div className="role-badge">{dev.role}</div>
-                                    <h3>{dev.name}</h3>
-                                    <p className="dev-desc">{dev.description}</p>
-
-                                    <div className="card-actions">
-                                        <button
-                                            className="mail-btn"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                window.location.href = `mailto:${dev.email}`;
-                                            }}
-                                        >
-                                            <Mail size={18} />
-                                            <span>Contact</span>
-                                        </button>
-                                        <button className="portfolio-link-btn">
-                                            Portfolio
-                                        </button>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
 
                 <section className="history-section">
                     <motion.div
