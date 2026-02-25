@@ -34,6 +34,15 @@ export const contributors: Contributor[] = [
         ],
         avatarUrl: '/assets/boy.png',
         profileUrl: 'https://www.linkedin.com/in/prakhar-parikh/'
+    },
+    {
+        id: '3',
+        name: 'Aditi Patro',
+        contributions: [
+            { idea: 'Implemented : Proper colors and UX (Greenis used for positive points)', status: 'Implemented' },
+        ],
+        avatarUrl: '/assets/girl.png',
+        profileUrl: 'https://www.linkedin.com/in/aditi-patro/'
     }
 
 ];
