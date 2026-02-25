@@ -41,7 +41,7 @@ export const contributors: Contributor[] = [
         contributions: [
             { idea: 'Implemented : Proper colors and UX (Greenis used for positive points)', status: 'Implemented' },
         ],
-        avatarUrl: '/assets/girl.png',
+        avatarUrl: '/assets/woman.png',
         profileUrl: 'https://www.linkedin.com/in/aditi-patro/'
     }
 
