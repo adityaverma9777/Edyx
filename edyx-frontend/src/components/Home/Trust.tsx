@@ -9,7 +9,7 @@ const Trust: React.FC = () => {
 
         <div className="trust-grid">
           <div className="trust-item">
-            <CheckCircle2 color="var(--color-accent-primary)" size={24} />
+            <CheckCircle2 color="var(--color-success)" size={24} />
             <div className="trust-content">
               <h3>No Credit Card Required</h3>
               <p>Start building without handing over sensitive payment info.</p>
@@ -17,7 +17,7 @@ const Trust: React.FC = () => {
           </div>
 
           <div className="trust-item">
-            <CheckCircle2 color="var(--color-accent-primary)" size={24} />
+            <CheckCircle2 color="var(--color-success)" size={24} />
             <div className="trust-content">
               <h3>Transparent Usage</h3>
               <p>See exactly how many tokens you use per request.</p>
@@ -25,7 +25,7 @@ const Trust: React.FC = () => {
           </div>
 
           <div className="trust-item">
-            <CheckCircle2 color="var(--color-accent-primary)" size={24} />
+            <CheckCircle2 color="var(--color-success)" size={24} />
             <div className="trust-content">
               <h3>Revoke Anytime</h3>
               <p>Leaked a key? Kill it instantly from your dashboard.</p>
@@ -33,7 +33,7 @@ const Trust: React.FC = () => {
           </div>
 
           <div className="trust-item">
-            <CheckCircle2 color="var(--color-accent-primary)" size={24} />
+            <CheckCircle2 color="var(--color-success)" size={24} />
             <div className="trust-content">
               <h3>99.9% Uptime</h3>
               <p>Reliable infrastructure scaling on Cloudflare & Render.</p>
