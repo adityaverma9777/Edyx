@@ -14,7 +14,7 @@ const BabyGrowth: React.FC = () => {
                         <h3>Free Forever. For the Builders.</h3>
                         <p>
                             We promise to always keep a <strong>generous free tier</strong>, even as we grow.
-                            We believe hobbyists and students deserve a safe space to experiment—<strong>without credit cards</strong> or data privacy trade-offs.
+                            We believe hobbyists and students deserve a safe space to experiment - <strong>without credit cards</strong> or data privacy trade-offs.
                         </p>
                         <p>
                             Your curiosity shouldn't cost you a thing. We will always have a space for you to build, break, and create.

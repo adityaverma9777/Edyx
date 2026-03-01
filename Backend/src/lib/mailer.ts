@@ -10,10 +10,9 @@ if (!MJ_APIKEY_PUBLIC || !MJ_APIKEY_PRIVATE || !MJ_SENDER_EMAIL) {
   console.warn("Missing Mailjet environment variables");
 }
 
-const mailjet = new Mailjet({
-  apiKey: MJ_APIKEY_PUBLIC,
-  apiSecret: MJ_APIKEY_PRIVATE
-});
+const mailjet = MJ_APIKEY_PUBLIC && MJ_APIKEY_PRIVATE
+  ? new Mailjet({ apiKey: MJ_APIKEY_PUBLIC, apiSecret: MJ_APIKEY_PRIVATE })
+  : null;
 
 export async function sendOtpEmail(to: string, otp: string) {
   const html = `
@@ -31,6 +30,11 @@ export async function sendOtpEmail(to: string, otp: string) {
   `;
 
   try {
+    if (!mailjet) {
+      console.warn("Mailjet is not configured. Skipping email send:", to, otp);
+      return;
+    }
+
     const request = await mailjet.post("send", { version: "v3.1" }).request({
       Messages: [
         {

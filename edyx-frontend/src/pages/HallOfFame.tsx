@@ -154,7 +154,7 @@ const HallOfFame: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                     >
-                        The Edyx Archive — Contributors
+                        The Edyx Archive Contributors
                     </motion.p>
 
                     <div className="hero-heading-row">
@@ -1170,7 +1170,7 @@ const HallOfFame: React.FC = () => {
                                 <ul className="guidelines-list">
                                     <li>
                                         <strong>Equal Valuation</strong>
-                                        <p>We value every contribution equally. There is no bias based on scope or size—whether big or small, every contribution is honored here.</p>
+                                        <p>We value every contribution equally. There is no bias based on scope or size - whether big or small, every contribution is honored here.</p>
                                     </li>
                                     <li>
                                         <strong>Diverse Inputs</strong>

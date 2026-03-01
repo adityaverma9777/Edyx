@@ -10,7 +10,7 @@ const MODELS = [
 ];
 
 const INITIAL_MESSAGES = [
-  { role: "assistant", content: "Hello! I'm Edyx. Pick a model above and ask me anything." },
+  { role: "assistant", content: "Hello! I'm Edyx. Pick a model above and ask me anything. First response may take a little longer, responses further will be faster." },
 ];
 
 const ChatDemo: React.FC = () => {

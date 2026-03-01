@@ -10,6 +10,13 @@ const LoginPage: React.FC = () => {
     const [step, setStep] = useState<"email" | "otp">("email");
 
     useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+            window.location.href = "/dashboard";
+        }
+    }, []);
+
+    useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             setMousePos({ x: e.clientX, y: e.clientY });
         };

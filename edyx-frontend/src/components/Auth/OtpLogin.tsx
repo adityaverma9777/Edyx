@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../lib/firebase";
 
 interface OtpLoginProps {
     onLoginSuccess: (email: string, token: string) => void;
@@ -44,10 +46,49 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
         }
     };
 
+    const handleGoogleLogin = async () => {
+        setIsLoading(true);
+        setError("");
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const idToken = await result.user.getIdToken();
+
+            const BACKEND_URL = import.meta.env.MODE === "development"
+                ? "http://localhost:3001"
+                : "https://edyx-backend.onrender.com";
+
+            const response = await fetch(`${BACKEND_URL}/auth/google`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ idToken }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (data.details) console.error("Backend Error Details:", data.details);
+                throw new Error(data.error || "Google Sign-In failed on server");
+            }
+
+            // Success
+            onLoginSuccess(data.user.email, data.token);
+
+        } catch (err: any) {
+            console.error(err);
+            if (err.code === "auth/popup-closed-by-user") {
+                setError(""); // Just ignore if they close the popup
+            } else {
+                setError(err.message || "Failed to sign in with Google.");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleOtpChange = (index: number, value: string) => {
         if (!/^\d*$/.test(value)) return; // Only allow numbers
         if (value.length > 1) {
-            
+
             const chars = value.split('').slice(0, 6 - index);
             const newOtp = [...otp];
             chars.forEach((char, i) => {
@@ -63,7 +104,7 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
         newOtp[index] = value;
         setOtp(newOtp);
 
-        
+
         if (value && index < 5) {
             const nextInput = document.getElementById(`otp-${index + 1}`);
             nextInput?.focus();
@@ -79,7 +120,7 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
                 setOtp(newOtp);
                 document.getElementById(`otp-${index - 1}`)?.focus();
             } else if (otp[index]) {
-                
+
             }
         }
     };
@@ -147,6 +188,20 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
                             </button>
                         </div>
                         {error && <p className="error-text">{error}</p>}
+
+                        <div className="divider">
+                            <span>or</span>
+                        </div>
+
+                        <button
+                            type="button"
+                            className="google-btn"
+                            onClick={handleGoogleLogin}
+                            disabled={isLoading}
+                        >
+                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo" width="20" height="20" />
+                            Sign in with Google
+                        </button>
                     </motion.form>
                 ) : (
                     <motion.form
@@ -311,6 +366,51 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
             border: 1px dashed #e5e5e5;
           }
           .spam-notice strong { color: var(--color-text-primary); }
+
+          .divider {
+              display: flex;
+              align-items: center;
+              text-align: center;
+              margin: 24px 0;
+              color: var(--color-text-secondary);
+              font-size: 0.9rem;
+          }
+          .divider::before,
+          .divider::after {
+              content: '';
+              flex: 1;
+              border-bottom: 1px solid rgba(0,0,0,0.1);
+          }
+          .divider span {
+              padding: 0 10px;
+          }
+
+          .google-btn {
+              width: 100%;
+              padding: 14px 16px;
+              border-radius: 16px;
+              background: white;
+              color: var(--color-text-primary);
+              font-weight: 600;
+              font-size: 1rem;
+              border: 1px solid rgba(0,0,0,0.1);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 12px;
+              transition: all 0.2s;
+              box-shadow: var(--shadow-sm);
+              cursor: pointer;
+          }
+          .google-btn:hover {
+              background: #fcfcfc;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+              transform: translateY(-1px);
+          }
+          .google-btn:disabled {
+              opacity: 0.7;
+              cursor: not-allowed;
+          }
        `}</style>
         </div>
     );

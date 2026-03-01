@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabase";
 import { generateOtp, hashOtp, verifyOtp, otpExpiry } from "../lib/otp";
 import { sendOtpEmail } from "../lib/mailer";
 import jwt from "jsonwebtoken";
+import { auth as firebaseAuth } from "../lib/firebase";
 
 const router = Router();
 
@@ -137,6 +138,71 @@ router.post("/verify-otp", async (req, res) => {
     console.error("Verify OTP error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
+});
+
+//verify Google login
+router.post("/google", async (req, res) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return res.status(400).json({ error: "Missing ID token" });
+    }
+
+    // Verify token with Firebase
+    const decodedToken = await firebaseAuth.verifyIdToken(idToken);
+    const email = decodedToken.email;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email not found in Google account" });
+    }
+
+    // Explicitly copy the exact block from OTP login
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .upsert({ email }, { onConflict: "email" })
+      .select()
+      .single();
+
+    if (userError || !user) {
+      console.error("User upsert error via Google auth:", userError, "User object:", user);
+      return res.status(500).json({ error: "Failed to create user from Google Auth", details: userError });
+    }
+
+    // Issue same JWT as OTP flow
+    const token = jwt.sign(
+      { user_id: user.id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+      },
+    });
+
+  } catch (err) {
+    console.error("Google verify token error:", err);
+    return res.status(401).json({ error: "Invalid Google token" });
+  }
+});
+
+// debug route for testing upsert from curl
+router.get("/test-upsert", async (req, res) => {
+  const email = "test-agent-upsert-123@gmail.com";
+  const { data: user, error: userError } = await supabase
+    .from("users")
+    .upsert({ email }, { onConflict: "email" })
+    .select()
+    .single();
+
+  if (userError || !user) {
+    return res.status(500).json({ error: "Failed", details: userError });
+  }
+  return res.json({ success: true, user });
 });
 
 export default router;

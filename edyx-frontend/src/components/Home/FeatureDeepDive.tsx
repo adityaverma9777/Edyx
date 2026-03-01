@@ -18,7 +18,7 @@ const FeatureDeepDive: React.FC = () => {
                             We remove the hurdles so you can just ship.
                         </p>
                         <ul className="feature-list">
-                            <li>• Magic Link / OTP Email</li>
+                            <li>• Google / OTP Email</li>
                             <li>• Instant Session Hydration</li>
                             <li>• No Password Fatigue</li>
                         </ul>
@@ -31,7 +31,7 @@ const FeatureDeepDive: React.FC = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8 }}
                             >
-                                <div className="sim-input">user@company.com</div>
+                                <div className="sim-input">Login Now</div>
                                 <motion.div
                                     className="sim-btn"
                                     animate={{
@@ -113,7 +113,7 @@ const FeatureDeepDive: React.FC = () => {
                         <p>
                             Meet our <strong>FAST</strong> model, powered by <strong>Qwen 2.5 (Quantized)</strong>.
                             Engineered for ultra-low latency and CPU-friendly performance.
-                            It delivers short, precise answers instantly—perfect for students and quick apps.
+                            It delivers short, precise answers instantly - perfect for students and quick apps.
                         </p>
                         <ul className="feature-list">
                             <li>• Powered by Qwen 2.5 Small</li>
