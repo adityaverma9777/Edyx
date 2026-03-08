@@ -27,8 +27,8 @@ export const contributors: Contributor[] = [
         id: '2',
         name: 'Prakhar Parikh',
         contributions: [
-            { idea: 'Proper colors and UX (Currently red is used for even positive points)', status: 'Approved' },
-            { idea: 'Feature Proposal: Implementing Google OAuth based faster login.', status: 'Approved' },
+            { idea: 'Proper colors and UX (Currently red is used for even positive points)', status: 'Implemented' },
+            { idea: 'Feature Proposal: Implementing Google OAuth based faster login.', status: 'Implemented' },
             { idea: 'A free GPT 4 API ', status: 'Under Consideration' },
             { idea: 'Future Scalability: Scaling platform using AWS/GCP infra at lower costs', status: 'Under Consideration' },
         ],
@@ -64,7 +64,7 @@ export const contributors: Contributor[] = [
             { idea: 'Github Issue : Error feedback could be more descriptive', status: 'Approved' },
             { idea: 'Github Issue : Landing page messaging could be clearer', status: 'Approved' },
             { idea: 'Github Issue : Model selection flow could prioritize API key and docs', status: 'Approved' },
-            { idea: 'Github Issue : Feature section demo email flow not working', status: 'Approved' },
+            { idea: 'Github Issue : Feature section demo email flow not working', status: 'Implemented' },
         ],
         avatarUrl: '/assets/boy.png',
         profileUrl: 'https://www.linkedin.com/in/hemkumar05/'
@@ -77,6 +77,5 @@ export const contributors: Contributor[] = [
         ],
         avatarUrl: '/assets/woman.png',
         profileUrl: 'https://www.linkedin.com/in/'
-    },
-
+    }
 ];
