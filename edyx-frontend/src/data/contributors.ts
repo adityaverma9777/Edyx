@@ -76,6 +76,6 @@ export const contributors: Contributor[] = [
             { idea: 'Github Issue : No Guidance After API Key Generation', status: 'Approved' },
         ],
         avatarUrl: '/assets/woman.png',
-        profileUrl: 'https://www.linkedin.com/in/'
+        profileUrl: 'https://www.linkedin.com/in/aisha-gupta-1st-3a4550228/'
     }
 ];
