@@ -49,7 +49,7 @@ const PdfSummarizer: React.FC = () => {
     formData.append('mode', mode);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+      const API_URL = import.meta.env.VITE_API_URL || "https://edyx-backend.onrender.com";
       const response = await fetch(`${API_URL}/services/pdf-summarize`, {
         method: "POST",
         body: formData,

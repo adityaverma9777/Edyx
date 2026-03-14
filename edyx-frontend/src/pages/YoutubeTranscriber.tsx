@@ -18,7 +18,7 @@ const YoutubeTranscriber: React.FC = () => {
         setCopied(false);
 
         try {
-            const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+            const API_URL = import.meta.env.VITE_API_URL || "https://edyx-backend.onrender.com";
             const response = await fetch(`${API_URL}/services/youtube-transcribe`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

@@ -28,7 +28,7 @@ const IconGenerator: React.FC = () => {
         const finalPrompt = `${prompt}, ${styleConfig?.prompt}`;
 
         try {
-            const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+            const API_URL = import.meta.env.VITE_API_URL || "https://edyx-backend.onrender.com";
             const response = await fetch(`${API_URL}/services/icon-generate`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
