@@ -93,29 +93,52 @@ router.post("/icon-generate", async (req: Request, res: Response): Promise<any> 
             return res.status(400).json({ error: "Prompt is required" });
         }
 
-        const seed = Math.floor(Math.random() * 1000000);
-        const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true&seed=${seed}`;
+        const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID;
+        const CF_AI_TOKEN = process.env.CF_WORKERS_AI_TOKEN;
+
+        if (!CF_ACCOUNT_ID || !CF_AI_TOKEN) {
+            return res.status(500).json({ error: "Server configuration error: Cloudflare Workers AI credentials are missing." });
+        }
+
+        const url = `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/ai/run/@cf/black-forest-labs/flux-1-schnell`;
 
         const response = await fetch(url, {
-            method: "GET",
+            method: "POST",
             headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                "Accept": "image/jpeg,image/png,image/*,*/*;q=0.8"
-            }
+                "Authorization": `Bearer ${CF_AI_TOKEN}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                num_steps: 4
+            })
         });
 
         if (!response.ok) {
             let errorText = "Unknown error";
             try { errorText = await response.text(); } catch (e) { }
-            console.error("Pollinations API Error:", response.status, errorText);
-            throw new Error(`Upstream image generation failed with status: ${response.status}`);
+            console.error("Cloudflare Workers AI Error:", response.status, errorText);
+            throw new Error(`Image generation failed: ${response.status}`);
         }
 
-        const arrayBuffer = await response.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+        const contentType = response.headers.get("content-type") || "";
 
-        res.set("Content-Type", "image/jpeg");
-        return res.send(buffer);
+        if (contentType.includes("image")) {
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            res.set("Content-Type", contentType);
+            return res.send(buffer);
+        }
+
+        const data: any = await response.json();
+
+        if (data.result && data.result.image) {
+            const imageBuffer = Buffer.from(data.result.image, "base64");
+            res.set("Content-Type", "image/png");
+            return res.send(imageBuffer);
+        }
+
+        throw new Error("Unexpected response format from image generation service");
 
     } catch (error: any) {
         console.error("Icon Generation Error:", error);
