@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth";
 import apiKeyRoutes from "./routes/apikeys";
 import chatRoutes from "./routes/chat";
 import commentsRoutes from "./routes/comments";
+import servicesRoutes from "./routes/services";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use("/auth", authRoutes);
 app.use("/keys", apiKeyRoutes);
 app.use("/chat", chatRoutes);
 app.use("/comments", commentsRoutes);
+app.use("/services", servicesRoutes);
 
 app.get("/health/db", async (_req, res) => {
   const { data, error } = await supabase

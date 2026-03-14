@@ -8,6 +8,7 @@ const MODEL_ENDPOINTS: Record<string, string> = {
     balanced: "https://edyxapi-edyx-llama-balanced.hf.space/v1/chat",
     fast: "https://edyxapi-edyx-qwen-fast.hf.space/v1/chat",
     physics: "https://edyxapi-edyx-phy.hf.space/v1/query",
+    "situation-aware": "https://edyxapi-situationaware.hf.space/chat/completions",
 };
 
 router.post("/", async (req: Request, res: Response) => {
@@ -66,6 +67,21 @@ router.post("/", async (req: Request, res: Response) => {
                     question,
                     top_k: req.body.top_k || 5,
                     max_tokens: req.body.max_tokens || 512
+                }),
+            });
+        } else if (model === "situation-aware") {
+            const userMessage = messages.slice().reverse().find((m: any) => m.role === "user");
+            const finalMessageContext = userMessage?.content || "";
+
+            hfResponse = await fetch(targetUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
+                },
+                body: JSON.stringify({
+                    message: finalMessageContext,
+                    messages: messages
                 }),
             });
         } else {
@@ -180,21 +196,38 @@ router.post("/demo", async (req: Request, res: Response) => {
             return;
         }
 
-        hfResponse = await fetch(targetUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
-            },
-            body: JSON.stringify({
-                messages,
-                max_tokens: 4096,
-                max_new_tokens: 4096,
-                temperature: 0.6,
-                repetition_penalty: 1.1,
-                stop: ["<|end|>", "<|endoftext|>", "<|im_end|>", "<|eot_id|>", "User:", "\nUser:"]
-            }),
-        });
+        if (model === "situation-aware") {
+            const userMessage = messages.slice().reverse().find((m: any) => m.role === "user");
+            const finalMessageContext = userMessage?.content || "";
+
+            hfResponse = await fetch(targetUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
+                },
+                body: JSON.stringify({
+                    message: finalMessageContext,
+                    messages: messages
+                }),
+            });
+        } else {
+            hfResponse = await fetch(targetUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Edyx-Token": process.env.EDYX_ACCESS_TOKEN || "edyx-secret-key-v1"
+                },
+                body: JSON.stringify({
+                    messages,
+                    max_tokens: 4096,
+                    max_new_tokens: 4096,
+                    temperature: 0.6,
+                    repetition_penalty: 1.1,
+                    stop: ["<|end|>", "<|endoftext|>", "<|im_end|>", "<|eot_id|>", "User:", "\nUser:"]
+                }),
+            });
+        }
 
         if (!hfResponse.ok) {
             const errorText = await hfResponse.text();

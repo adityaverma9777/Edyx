@@ -70,8 +70,8 @@ router.post("/", requireAuth, async (req: AuthRequest, res) => {
       return res.status(400).json({ error: "Missing name or model" });
     }
 
-    if (!["convo", "balanced", "fast", "physics"].includes(model)) {
-      return res.status(400).json({ error: "Invalid model. Must be: convo, balanced, fast, or physics" });
+    if (!["convo", "balanced", "fast", "physics", "situation-aware"].includes(model)) {
+      return res.status(400).json({ error: "Invalid model. Must be: convo, balanced, fast, physics, or situation-aware" });
     }
 
     // Check Limit (Max 10 per model)
