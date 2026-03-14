@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import Layout from "../components/Layout/Layout";
 import Hero from "../components/Home/Hero";
-import ChatDemo from "../components/Home/ChatDemo";
 import OtpLogin from "../components/Auth/OtpLogin";
-import FeatureDeepDive from "../components/Home/FeatureDeepDive";
 import PhoneMockup from "../components/Home/PhoneMockup";
-import ModelCompare from "../components/Home/ModelCompare";
-import Trust from "../components/Home/Trust";
 import Narrative from "../components/Home/Narrative";
 import MacbookMockup from "../components/Home/MacbookMockup";
+import AiApiModels from "../components/Home/AiApiModels";
+import AiServices from "../components/Home/AiServices";
+import WhyChooseEdyx from "../components/Home/WhyChooseEdyx";
 import BabyGrowth from "../components/Home/BabyGrowth";
+import Trust from "../components/Home/Trust";
 
 const LandingPage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,26 +60,26 @@ const LandingPage: React.FC = () => {
 
         <MacbookMockup />
 
+        <div className="spacer-md" />
 
-        <FeatureDeepDive />
+        <AiApiModels />
+
+        <div className="spacer-md" />
+
+        <AiServices />
+
+        <div className="spacer-md" />
+
+        <WhyChooseEdyx />
 
         <div className="spacer-lg" />
 
         <PhoneMockup />
 
-        <ModelCompare />
-
-
-        <ChatDemo />
-
-        <div className="spacer-lg" />
-
-
         <BabyGrowth />
 
-        <div className="spacer-lg" />
-
         <Trust />
+
       </div>
 
       <style>{`
@@ -156,6 +156,11 @@ const LandingPage: React.FC = () => {
         .spacer-lg {
            height: 100px;
            background: white;
+        }
+        
+        .spacer-md {
+           height: 60px;
+           background: transparent;
         }
       `}</style>
     </Layout>

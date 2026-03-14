@@ -6,6 +6,9 @@ import Docs from "./pages/Docs";
 import DevelopersPage from "./pages/DevelopersPage";
 import AboutProject from "./pages/AboutProject";
 import HallOfFame from "./pages/HallOfFame";
+import PdfSummarizer from "./pages/PdfSummarizer";
+import IconGenerator from "./pages/IconGenerator";
+import YoutubeTranscriber from "./pages/YoutubeTranscriber";
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
         <Route path="/evolutionlog" element={<DevelopersPage />} />
         <Route path="/about-project" element={<AboutProject />} />
         <Route path="/hall-of-fame" element={<HallOfFame />} />
+        <Route path="/services/pdf-summarizer" element={<PdfSummarizer />} />
+        <Route path="/services/icon-generator" element={<IconGenerator />} />
+        <Route path="/services/youtube-transcriber" element={<YoutubeTranscriber />} />
       </Routes>
     </Router>
   );

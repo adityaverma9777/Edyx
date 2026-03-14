@@ -49,7 +49,7 @@ export const contributors: Contributor[] = [
         name: 'Indrasena Reddy Bala',
         contributions: [
             { idea: ' Dockerization via a docker-compose setup to streamline the local development environment for the backend, frontend, and gateway', status: 'Under Consideration' },
-            { idea: ' Improve the Docs.tsx page by adding interactive code snippets (cURL/Python) to help users connect to the AI models more efficiently', status: 'Approved' },
+            { idea: ' Improve the Docs.tsx page by adding interactive code snippets (cURL/Python) to help users connect to the AI models more efficiently', status: 'Implemented' },
         ],
         avatarUrl: '/assets/boy.png',
         profileUrl: 'https://www.linkedin.com/in/indrasenareddybala'

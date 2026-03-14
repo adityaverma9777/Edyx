@@ -53,9 +53,7 @@ const OtpLogin: React.FC<OtpLoginProps> = ({ onLoginSuccess, onEmailFocus, onEma
             const result = await signInWithPopup(auth, googleProvider);
             const idToken = await result.user.getIdToken();
 
-            const BACKEND_URL = import.meta.env.MODE === "development"
-                ? "http://localhost:3001"
-                : "https://edyx-backend.onrender.com";
+            const BACKEND_URL = import.meta.env.VITE_API_URL || "https://edyx-backend.onrender.com";
 
             const response = await fetch(`${BACKEND_URL}/auth/google`, {
                 method: "POST",

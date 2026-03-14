@@ -13,9 +13,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import { formatDistanceToNow } from 'date-fns';
 import { jwtDecode } from 'jwt-decode';
 
-const BACKEND_URL = import.meta.env.MODE === "development"
-    ? "http://localhost:3001"
-    : "https://edyx-backend.onrender.com";
+const BACKEND_URL = import.meta.env.VITE_API_URL || "https://edyx-backend.onrender.com";
 
 const getAvatarColor = (username: string) => {
     let hash = 0;

@@ -3,12 +3,13 @@ import Layout from '../components/Layout/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Cpu, Zap, MessageSquare, ArrowLeft, Key,
-    BarChart2, FileText, Plus, Trash2, Copy, Check, Atom
+    BarChart2, FileText, Plus, Trash2, Copy, Check, Atom, Globe
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import ChatDemo from '../components/Home/ChatDemo';
 
 
-type ModelType = 'fast' | 'balanced' | 'convo' | 'physics';
+type ModelType = 'fast' | 'balanced' | 'convo' | 'physics' | 'situation-aware';
 
 interface ApiKey {
     id: string;
@@ -48,6 +49,13 @@ const MODELS = [
         description: 'Response time: ~15 seconds. Scientific reasoning with large-scale physics vector index.',
         icon: Atom,
         color: '#06b6d4'
+    },
+    {
+        id: 'situation-aware' as ModelType,
+        name: 'Situation Aware AI',
+        description: 'Response time: ~10 seconds. Real-time search-augmented pipeline powered by Groq & DuckDuckGo.',
+        icon: Globe,
+        color: '#22c55e'
     }
 ];
 
@@ -227,6 +235,15 @@ const Dashboard: React.FC = () => {
                     {/* DOCUMENTATION */}
                     {activeTab === 'docs' && (
                         <div className="docs-content">
+                            <h3>Test the Model</h3>
+                            <p>Try out the <strong>{model.name}</strong> model directly in the browser.</p>
+
+                            <div className="demo-section" style={{ marginBottom: '40px' }}>
+                                <ChatDemo modelId={model.id} />
+                            </div>
+
+                            <hr style={{ border: 'none', borderTop: '1px solid rgba(0,0,0,0.08)', margin: '40px 0' }} />
+
                             <h3>Integration Guide</h3>
                             <p>Connect to the <strong>{model.name}</strong> model using standard HTTP requests. Select your preferred language below.</p>
 
@@ -969,7 +986,7 @@ $body = @{
 } | ConvertTo-Json -Depth 4
 
 $response = Invoke-RestMethod -Uri "https://edyx-backend.onrender.com/chat" -Method Post -Headers $headers -Body $body
-Write-Output $response.text`,
+Write-Output $response.choices[0].message.content`,
         python: `import requests
 
 api_key = "YOUR_API_KEY"

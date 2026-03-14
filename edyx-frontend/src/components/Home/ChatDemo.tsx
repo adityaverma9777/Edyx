@@ -7,14 +7,22 @@ const MODELS = [
   { id: "balanced", name: "Balanced", desc: "General Purpose", color: "#A855F7" },
   { id: "fast", name: "Fast", desc: "Instant Replies", color: "#3B82F6" },
   { id: "physics", name: "Physics", desc: "Scientific Q&A", color: "#06b6d4" },
+  { id: "situation-aware", name: "Situation Aware AI", desc: "Real-time search-augmented AI", color: "#22c55e" }
 ];
 
 const INITIAL_MESSAGES = [
-  { role: "assistant", content: "Hello! I'm Edyx. Pick a model above and ask me anything. First response may take a little longer, responses further will be faster." },
+  { role: "assistant", content: "Hello! I'm Edyx. Ask me anything. First response may take a little longer, responses further will be faster." },
 ];
 
-const ChatDemo: React.FC = () => {
-  const [selectedModel, setSelectedModel] = useState(MODELS[0]);
+interface ChatDemoProps {
+  modelId?: string;
+}
+
+const ChatDemo: React.FC<ChatDemoProps> = ({ modelId }) => {
+  // If modelId prop is provided, find it in MODELS, otherwise default to the first one
+  const initialModel = modelId ? MODELS.find(m => m.id === modelId) || MODELS[0] : MODELS[0];
+
+  const [selectedModel, setSelectedModel] = useState(initialModel);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [messages, setMessages] = useState<Array<{ role: string, content: string }>>(INITIAL_MESSAGES);
   const [isTyping, setIsTyping] = useState(false);
@@ -33,7 +41,9 @@ const ChatDemo: React.FC = () => {
       // Build context from previous messages
       const chatHistory = [...messages, userMsg];
 
-      const response = await fetch("https://edyx-backend.onrender.com/chat/demo", {
+      let response;
+
+      response = await fetch("https://edyx-backend.onrender.com/chat/demo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -87,15 +97,21 @@ const ChatDemo: React.FC = () => {
       <div className="chat-interface glass-panel">
         {/* Header / Model Selector */}
         <div className="chat-header">
-          <div className="model-selector" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+          <div
+            className="model-selector"
+            onClick={() => !modelId && setIsDropdownOpen(!isDropdownOpen)}
+            style={{ cursor: modelId ? 'default' : 'pointer' }}
+          >
             <div className="current-model">
               <Sparkles size={16} color={selectedModel.color} />
               <span className="model-name">{selectedModel.name}</span>
-              <ChevronDown size={14} className={`dropdown-arrow ${isDropdownOpen ? "open" : ""}`} />
+              {!modelId && (
+                <ChevronDown size={14} className={`dropdown-arrow ${isDropdownOpen ? "open" : ""}`} />
+              )}
             </div>
 
             <AnimatePresence>
-              {isDropdownOpen && (
+              {isDropdownOpen && !modelId && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -123,7 +139,7 @@ const ChatDemo: React.FC = () => {
               )}
             </AnimatePresence>
           </div>
-          <span className="header-hint">Test drive our full model suite</span>
+          {!modelId && <span className="header-hint">Test drive our full model suite</span>}
         </div>
 
         {/* Chat Area */}
