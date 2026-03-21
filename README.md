@@ -145,6 +145,7 @@ edyx-frontend/
 | `/dashboard` | Dashboard | API key management, usage stats, model selection |
 | `/docs` | Docs | How to use the API, code examples |
 | `/developers` | DevelopersPage | Team bios, contributor information |
+| `/assistant` | VoiceAssistantPage | Real-time Voice Agent with Smart VAD and interruptibility |
 
 ### How Login Works (User Flow)
 
@@ -204,9 +205,9 @@ When you create a key, it's saved to Supabase first, then pushed to Cloudflare K
 
 ---
 
-## The 4 AI Models
+## The 5 AI Models
 
-Edyx provides access to **4 different AI models**, each optimized for different use cases:
+Edyx provides access to **5 different AI models**, each optimized for different use cases:
 
 | Model | Endpoint | Best For |
 | :--- | :--- | :--- |
@@ -214,6 +215,7 @@ Edyx provides access to **4 different AI models**, each optimized for different 
 | **balanced** | `edyxapi-edyx-llama-balanced.hf.space` | General purpose, good balance of speed and quality |
 | **convo** | `edyxapi-convo-model.hf.space` | Long conversations, maintaining context |
 | **physics** | `edyxapi-edyx-phy.hf.space` | Physics questions, scientific queries (RAG-based) |
+| **situation-aware** | `edyxapi-situation-aware.hf.space` | Contextual understanding, real-time awareness |
 
 ### Physics Model - Special Notes
 
@@ -222,6 +224,12 @@ The **physics** model is different! It's a RAG (Retrieval Augmented Generation) 
 - Accepts `question`, `top_k`, and `max_tokens` parameters
 - Returns `answer` plus `sources_used` count
 - Great for physics homework, scientific explanations
+
+### Voice Agent - Special Notes
+
+The Edyx platform includes a highly-interactive **Voice Agent** available at `/assistant`.
+- **Interruptible & Smart**: Uses Voice Activity Detection (VAD) via the Web Audio API to filter background noise and allows users to seamlessly interrupt the assistant mid-sentence.
+- **Dynamic UX**: Features an optimized 120fps UI with live audio-reactive waveform visualizers for both user and assistant speech.
 
 ---
 
@@ -348,7 +356,15 @@ CF_ACCOUNT_ID=xxx
 CF_KV_NAMESPACE_ID=xxx
 CF_API_TOKEN=xxx
 EDYX_ACCESS_TOKEN=xxx
+FIREBASE_PROJECT_ID=xxx
+FIREBASE_CLIENT_EMAIL=xxx
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n..."
 ```
+
+**Environment Variables Explained:**
+- `SUPABASE_SERVICE_ROLE_KEY`: Required for elevated database access to manage keys, users, and backend bypass logic.
+- `MJ_SENDER_EMAIL`, `MJ_APIKEY_PRIVATE` (and `PUBLIC`): Mailjet credentials for dispatching OTP login emails.
+- `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`: Firebase Admin credentials required for serverless integrations or related backend services (e.g. Google Cloud TTS/STT).
 
 ---
 
