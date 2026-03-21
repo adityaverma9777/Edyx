@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AssistantBubble from "./components/Layout/AssistantBubble";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
@@ -14,6 +15,7 @@ import VoiceAssistantPage from "./pages/VoiceAssistantPage";
 function App() {
   return (
     <Router>
+      <AssistantBubble />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
