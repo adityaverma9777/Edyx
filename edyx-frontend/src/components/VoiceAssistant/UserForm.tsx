@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { submitVoiceLead } from "../../lib/voiceAssistantApi";
 import type { LeadPayload } from "../../lib/voiceAssistantApi";
 
@@ -67,13 +68,13 @@ export default function UserForm({ onCompleted }: UserFormProps) {
   }
 
   return (
-    <>
+    <div className="voice-content-wrapper voice-form-wrapper">
       <button 
         type="button" 
         className="voice-top-back voice-global-back" 
         onClick={() => navigate('/')} 
       >
-        Back
+        <ArrowLeft size={16} /> Back
       </button>
 
       <motion.form
@@ -138,6 +139,6 @@ export default function UserForm({ onCompleted }: UserFormProps) {
         {submitting ? "Saving..." : "Continue"}
       </motion.button>
     </motion.form>
-    </>
+    </div>
   );
 }

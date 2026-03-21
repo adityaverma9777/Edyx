@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mic, MessageSquare } from "lucide-react";
+import { Mic, MessageSquare, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 type ModeSelectionProps = {
@@ -24,13 +24,13 @@ const modes = [
 export default function ModeSelection({ onSelect }: ModeSelectionProps) {
   const navigate = useNavigate();
   return (
-    <>
+    <div className="voice-content-wrapper voice-mode-wrapper">
       <button 
         type="button" 
         className="voice-top-back voice-global-back" 
         onClick={() => navigate('/')} 
       >
-        Back
+        <ArrowLeft size={16} /> Back
       </button>
 
       <motion.div
@@ -74,6 +74,6 @@ export default function ModeSelection({ onSelect }: ModeSelectionProps) {
         })}
       </div>
     </motion.div>
-    </>
+    </div>
   );
 }
