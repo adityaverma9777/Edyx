@@ -82,21 +82,21 @@ const FeatureDeepDive: React.FC = () => {
                                         </linearGradient>
                                     </defs>
                                     {/* Connections */}
-                                    <motion.line x1="100" y1="100" x2="50" y2="40" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.2 }} />
-                                    <motion.line x1="100" y1="100" x2="150" y2="40" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.3 }} />
-                                    <motion.line x1="100" y1="100" x2="30" y2="100" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.4 }} />
-                                    <motion.line x1="100" y1="100" x2="170" y2="100" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.5 }} />
-                                    <motion.line x1="100" y1="100" x2="50" y2="160" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.6 }} />
-                                    <motion.line x1="100" y1="100" x2="150" y2="160" stroke="url(#lineGradient)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.7 }} />
+                                    <motion.line x1={100} y1={100} x2={50} y2={40} stroke="url(#lineGradient)" strokeWidth={1} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.2 }} />
+                                    <motion.line x1={100} y1={100} x2={150} y2={40} stroke="url(#lineGradient)" strokeWidth={1} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.3 }} />
+                                    <motion.line x1={100} y1={100} x2={30} y2={100} stroke="url(#lineGradient)" strokeWidth={1} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.4 }} />
+                                    <motion.line x1={100} y1={100} x2={170} y2={100} stroke="url(#lineGradient)" strokeWidth={1} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.5 }} />
+                                    <motion.line x1={100} y1={100} x2={50} y2={160} stroke="url(#lineGradient)" strokeWidth={1} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.6 }} />
+                                    <motion.line x1={100} y1={100} x2={150} y2={160} stroke="url(#lineGradient)" strokeWidth={1} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.7 }} />
                                     {/* Outer Nodes */}
-                                    <motion.circle cx="50" cy="40" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0 }} />
-                                    <motion.circle cx="150" cy="40" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }} />
-                                    <motion.circle cx="30" cy="100" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }} />
-                                    <motion.circle cx="170" cy="100" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.9 }} />
-                                    <motion.circle cx="50" cy="160" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 1.2 }} />
-                                    <motion.circle cx="150" cy="160" r="8" fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 1.5 }} />
+                                    <motion.circle cx={50} cy={40} r={8} fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0 }} />
+                                    <motion.circle cx={150} cy={40} r={8} fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }} />
+                                    <motion.circle cx={30} cy={100} r={8} fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }} />
+                                    <motion.circle cx={170} cy={100} r={8} fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.9 }} />
+                                    <motion.circle cx={50} cy={160} r={8} fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 1.2 }} />
+                                    <motion.circle cx={150} cy={160} r={8} fill="#22d3ee" animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 1.5 }} />
                                     {/* Central Core */}
-                                    <motion.circle cx="100" cy="100" r="16" fill="#0891b2" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
+                                    <motion.circle cx={100} cy={100} r={16} fill="#0891b2" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
                                     <circle cx="100" cy="100" r="24" fill="none" stroke="#06b6d4" strokeWidth="1" opacity="0.4" />
                                     <circle cx="100" cy="100" r="32" fill="none" stroke="#06b6d4" strokeWidth="1" opacity="0.2" />
                                 </svg>
