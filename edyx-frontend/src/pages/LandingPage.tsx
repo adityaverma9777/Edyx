@@ -11,6 +11,7 @@ import AiServices from "../components/Home/AiServices";
 import WhyChooseEdyx from "../components/Home/WhyChooseEdyx";
 import BabyGrowth from "../components/Home/BabyGrowth";
 import Trust from "../components/Home/Trust";
+import VoiceAssistantPromo from "../components/Home/VoiceAssistantPromo";
 
 const LandingPage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -79,6 +80,8 @@ const LandingPage: React.FC = () => {
         <BabyGrowth />
 
         <Trust />
+
+        <VoiceAssistantPromo />
 
       </div>
 

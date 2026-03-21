@@ -9,6 +9,7 @@ import HallOfFame from "./pages/HallOfFame";
 import PdfSummarizer from "./pages/PdfSummarizer";
 import IconGenerator from "./pages/IconGenerator";
 import YoutubeTranscriber from "./pages/YoutubeTranscriber";
+import VoiceAssistantPage from "./pages/VoiceAssistantPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/services/pdf-summarizer" element={<PdfSummarizer />} />
         <Route path="/services/icon-generator" element={<IconGenerator />} />
         <Route path="/services/youtube-transcriber" element={<YoutubeTranscriber />} />
+        <Route path="/assistant" element={<VoiceAssistantPage />} />
       </Routes>
     </Router>
   );

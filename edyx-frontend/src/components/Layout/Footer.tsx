@@ -34,6 +34,7 @@ const Footer: React.FC = () => {
           <div className="link-column">
             <h4>Platform</h4>
             <a href="/dashboard">Dashboard</a>
+            <a href="/assistant">Assistant</a>
             <a href="/evolutionlog">Evolution Log</a>
             <a href="/docs">API Docs</a>
           </div>
