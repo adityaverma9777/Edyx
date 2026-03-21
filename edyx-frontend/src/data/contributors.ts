@@ -77,5 +77,23 @@ export const contributors: Contributor[] = [
         ],
         avatarUrl: '/assets/woman.png',
         profileUrl: 'https://www.linkedin.com/in/aisha-gupta-1st-3a4550228/'
+    },
+    {
+        id: '7',
+        name: 'Aditya',
+        contributions: [
+            { idea: 'Github Issue #14: Docs page not responsive on mobile devices ', status: 'Implemented' },
+        ],
+        avatarUrl: '/assets/boy.png',
+        profileUrl: 'https://github.com/adiaditya78'
+    },
+    {
+        id: '8',
+        name: 'Akshay',
+        contributions: [
+            { idea: 'Github Issue #15: Missing variables in the readme file ', status: 'Implemented' },
+        ],
+        avatarUrl: '/assets/boy.png',
+        profileUrl: 'https://github.com/Akshay175'
     }
 ];
