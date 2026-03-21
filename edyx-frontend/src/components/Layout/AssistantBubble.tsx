@@ -9,11 +9,6 @@ export default function AssistantBubble() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Hide on the assistant page itself
-  if (location.pathname === "/assistant") {
-    return null;
-  }
-
   // Keyboard detection to hide bubble on mobile when typing
   useEffect(() => {
     const minHeightDiff = 150;
@@ -73,7 +68,7 @@ export default function AssistantBubble() {
     };
   }, []);
 
-  if (isKeyboardOpen) return null;
+  if (isKeyboardOpen || location.pathname === "/assistant") return null;
 
   return (
     <div
