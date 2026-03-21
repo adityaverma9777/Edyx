@@ -106,7 +106,7 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
             autoListenRef.current && 
             !isRecordingRef.current
           ) {
-            const vol = meter.getVolume();
+            const vol = meter.read(16).level;
             if (vol > 0.08) { // Volume threshold
               vadConseqFrames++;
               if (vadConseqFrames > 12) { // ~200ms of sustained audio spike
