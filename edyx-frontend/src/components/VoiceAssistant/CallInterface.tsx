@@ -44,6 +44,7 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
   const assistantAudioRef = useRef<HTMLAudioElement | null>(null);
   const assistantSourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const assistantAnalyserRef = useRef<AnalyserNode | null>(null);
+  const captionScrollRef = useRef<HTMLDivElement>(null);
   
   // Timers and Tracking
   const speakingRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -188,6 +189,12 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [greeting]);
+
+  useEffect(() => {
+    if (captionScrollRef.current) {
+      captionScrollRef.current.scrollTop = captionScrollRef.current.scrollHeight;
+    }
+  }, [captions]);
 
   const statusLabel = useMemo(() => {
     if (isThinking) return "Processing";
@@ -503,8 +510,8 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
         </motion.div>
       )}
 
-      <div className="voice-caption-stack">
-        {captions.slice(-4).map((caption, index) => (
+      <div className="voice-caption-stack" ref={captionScrollRef}>
+        {captions.slice(-5).map((caption, index) => (
           <motion.div
             key={`${caption.role}-${index}-${caption.text.slice(0, 20)}`}
             className={`voice-caption voice-caption-${caption.role}`}

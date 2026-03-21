@@ -586,9 +586,25 @@
 
 .voice-caption-stack {
   width: min(720px, 90vw);
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   margin-top: 8px;
+  max-height: 25vh;
+  overflow-y: auto;
+  padding-right: 4px;
+  scroll-behavior: smooth;
+}
+
+.voice-caption-stack::-webkit-scrollbar {
+  width: 4px;
+}
+.voice-caption-stack::-webkit-scrollbar-track {
+  background: transparent;
+}
+.voice-caption-stack::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 99px;
 }
 
 .voice-caption {
