@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import IntroScreen from "../components/VoiceAssistant/IntroScreen";
 import UserForm from "../components/VoiceAssistant/UserForm";
 import ModeSelection from "../components/VoiceAssistant/ModeSelection";
@@ -19,6 +19,25 @@ export default function VoiceAssistantPage() {
   const [greeting, setGreeting] = useState("Hi, I am your Edyx assistant. How can I help you today?");
 
   const canOpenInteraction = useMemo(() => Boolean(sessionId), [sessionId]);
+
+  useEffect(() => {
+    // Lock body scrolling globally to prevent mobile elastic bounce and scroll
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.width = "100%";
+    document.body.style.height = "100%";
+    document.body.style.touchAction = "none"; // Disable all browser gestures globally
+
+    return () => {
+      document.body.style.overflow = originalStyle;
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
+      document.body.style.touchAction = "";
+    };
+  }, []);
 
   async function openMode(mode: "call" | "chat") {
     setBootstrapError("");

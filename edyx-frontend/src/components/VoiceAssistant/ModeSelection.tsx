@@ -27,9 +27,8 @@ export default function ModeSelection({ onSelect }: ModeSelectionProps) {
     <>
       <button 
         type="button" 
-        className="voice-top-back" 
+        className="voice-top-back voice-global-back" 
         onClick={() => navigate('/')} 
-        style={{ position: 'fixed', top: '40px', left: '40px', zIndex: 100 }}
       >
         Back
       </button>
