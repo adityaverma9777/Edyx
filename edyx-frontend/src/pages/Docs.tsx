@@ -76,6 +76,15 @@ const Docs: React.FC = () => {
                                 <p>A retrieval-grounded scientific reasoning system powered by a 630M-parameter Qwen model and a large-scale physics vector index. Ideal for physics questions, scientific explanations, and academic research.</p>
                                 <div className="tags"><span className="tag">Scientific</span> <span className="tag">RAG-powered</span> <span className="tag">Physics</span> <span className="tag">Vector Index</span></div>
                             </div>
+
+                            <div className="model-card">
+                                <div className="card-header">
+                                    <h3>Situation-Aware</h3>
+                                    <span className="model-id"><code>model: "situation-aware"</code></span>
+                                </div>
+                                <p>Designed for contextual and real-time awareness. This model excels at processing real-time context, environment data, and understanding dynamic situations smoothly.</p>
+                                <div className="tags"><span className="tag">Real-time Context</span> <span className="tag">Awareness</span> <span className="tag">Adaptive</span></div>
+                            </div>
                         </section>
 
 
@@ -252,6 +261,8 @@ const Docs: React.FC = () => {
             padding-top: 100px;
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
             color: #1d1d1f;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         .docs-header {
@@ -260,15 +271,17 @@ const Docs: React.FC = () => {
             padding: 0 20px;
         }
         .docs-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
-        .docs-header p { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto; }
+        .docs-header p { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto; box-sizing: border-box; padding: 0 10px; }
 
         .docs-grid {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 240px 1fr;
+            grid-template-columns: 240px minmax(0, 1fr);
             gap: 60px;
             padding: 0 40px 100px;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .docs-sidebar {
@@ -285,10 +298,11 @@ const Docs: React.FC = () => {
             color: #1d1d1f; background: rgba(0,0,0,0.05);
         }
 
-        .docs-sections { display: flex; flex-direction: column; gap: 80px; }
+        .docs-sections { display: flex; flex-direction: column; gap: 80px; min-width: 0; }
 
+        .doc-section { min-width: 0; }
         .doc-section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
-        .doc-section p { font-size: 1.05rem; color: #444; line-height: 1.7; margin-bottom: 24px; }
+        .doc-section p { font-size: 1.05rem; color: #444; line-height: 1.7; margin-bottom: 24px; word-wrap: break-word; overflow-wrap: break-word; }
         
         .section-icon { 
             width: 48px; height: 48px; background: #f5f5f7; 
@@ -300,6 +314,7 @@ const Docs: React.FC = () => {
             background: white; border: 1px solid rgba(0,0,0,0.08);
             padding: 24px; border-radius: 16px; margin-bottom: 20px;
             transition: transform 0.2s;
+            box-sizing: border-box; width: 100%;
         }
         .model-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .model-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; }
@@ -335,13 +350,27 @@ const Docs: React.FC = () => {
         .policy-card li { margin-bottom: 8px; }
 
         .code-header { background: #333; padding: 8px 20px; font-size: 0.8rem; color: #bbb; border-bottom: 1px solid #444; }
-        .code-block pre { padding: 20px; margin: 0; color: #a9b7c6; }
+        .code-block { background: #1e1e1e; border-radius: 12px; margin-bottom: 24px; overflow: hidden; }
+        .code-block pre { padding: 20px; margin: 0; color: #a9b7c6; overflow-x: auto; font-size: 0.9rem; }
 
+        .api-details {
+            display: flex; align-items: center; gap: 12px; margin: 24px 0;
+            background: #1e1e1e; padding: 12px 16px; border-radius: 8px;
+            width: fit-content; max-width: 100%; box-sizing: border-box; overflow-x: auto;
+        }
 
         @media (max-width: 768px) {
-            .docs-grid { grid-template-columns: 1fr; }
+            .docs-grid { grid-template-columns: minmax(0, 1fr); padding: 0 16px 80px; }
             .docs-sidebar { display: none; } /* Hide sidebar on mobile for now */
-            .security-grid { grid-template-columns: 1fr; }
+            .security-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+            .policy-grid-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+            .docs-header h1 { font-size: 2.2rem; }
+            .docs-header p { font-size: 1rem; }
+            .card-header { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+            .tags { flex-wrap: wrap; }
+            .endpoint-url { word-break: break-all; white-space: pre-wrap; }
+            .doc-section { padding-top: 20px; overflow-x: hidden; }
+            .model-card { padding: 16px; }
         }
       `}</style>
         </div>
