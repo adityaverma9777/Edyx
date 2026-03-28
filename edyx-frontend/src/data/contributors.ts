@@ -95,5 +95,14 @@ export const contributors: Contributor[] = [
         ],
         avatarUrl: '/assets/boy.png',
         profileUrl: 'https://github.com/Akshay175'
+    },
+    {
+        id: '9',
+        name: 'Manasa Devi Akula',
+        contributions: [
+            { idea: 'Github Issue #15: Layout Improvements for Better usability & Beginner Demo Video for Edyx #16 ', status: 'Under Consideration' },
+        ],
+        avatarUrl: '/assets/woman.png',
+        profileUrl: 'https://www.linkedin.com/in/manasa-devi-akula-a36a51375/'
     }
 ];
