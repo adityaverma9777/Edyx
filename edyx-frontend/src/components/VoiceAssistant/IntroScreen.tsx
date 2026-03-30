@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 type IntroScreenProps = {
   onComplete: () => void;
@@ -11,15 +12,22 @@ const lines = [
 ];
 
 export default function IntroScreen({ onComplete }: IntroScreenProps) {
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      onComplete();
+    }, 4400);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [onComplete]);
+
   return (
     <motion.div
       className="voice-intro"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, filter: "blur(16px)", scale: 0.98, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }}
-      onAnimationComplete={() => {
-        window.setTimeout(onComplete, 4400);
-      }}
     >
       <div className="voice-intro-aurora" />
       <div className="voice-gradient-orb voice-gradient-orb-a" />

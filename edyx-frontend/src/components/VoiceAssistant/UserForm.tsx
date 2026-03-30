@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { submitVoiceLead } from "../../lib/voiceAssistantApi";
+import { submitVoiceLeadInBackground } from "../../lib/voiceAssistantApi";
 import type { LeadPayload } from "../../lib/voiceAssistantApi";
 
 type UserFormProps = {
@@ -40,9 +40,13 @@ export default function UserForm({ onCompleted }: UserFormProps) {
     };
   }, [name, email, phone]);
 
-  async function handleSubmit(event: FormEvent) {
+  function handleSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
+
+    if (submitting) {
+      return;
+    }
 
     if (!validation.name || !validation.email || !validation.phone) {
       setError("Please enter valid details to continue.");
@@ -57,14 +61,20 @@ export default function UserForm({ onCompleted }: UserFormProps) {
       consent,
     };
 
+    // Move the user forward immediately and persist lead data asynchronously.
     try {
-      await submitVoiceLead(payload);
       onCompleted(payload);
-    } catch (submitError: any) {
-      setError(submitError?.message || "Unable to continue right now.");
-    } finally {
+    } catch (completionError: any) {
       setSubmitting(false);
+      setError(completionError?.message || "Unable to continue right now.");
+      return;
     }
+
+    submitVoiceLeadInBackground(payload, (submitError) => {
+      console.warn("Lead capture failed in background:", submitError);
+    });
+
+    setSubmitting(false);
   }
 
   return (

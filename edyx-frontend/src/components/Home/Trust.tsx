@@ -35,7 +35,7 @@ const Trust: React.FC = () => {
           <div className="trust-item">
             <CheckCircle2 color="var(--color-success)" size={24} />
             <div className="trust-content">
-              <h3>99.9% Uptime</h3>
+              <h3>80% Uptime</h3>
               <p>Reliable infrastructure scaling on Cloudflare & Render.</p>
             </div>
           </div>

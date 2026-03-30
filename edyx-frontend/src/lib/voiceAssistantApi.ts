@@ -53,9 +53,18 @@ async function parseApiResponse(response: Response) {
   return data;
 }
 
-export async function bootstrapAssistant(): Promise<BootstrapResponse> {
-  const response = await fetch(`${BACKEND_URL}/voice-assistant/bootstrap`);
-  return parseApiResponse(response);
+export async function bootstrapAssistant(signal?: AbortSignal): Promise<BootstrapResponse> {
+  const response = await fetch(`${BACKEND_URL}/voice-assistant/bootstrap`, { signal });
+  const data = (await parseApiResponse(response)) as Partial<BootstrapResponse>;
+
+  if (!data?.sessionId || typeof data.sessionId !== "string") {
+    const error = new Error("Assistant service is still waking up. Please retry in a moment.") as VoiceApiError;
+    error.code = "BOOTSTRAP_INVALID_RESPONSE";
+    error.retryable = true;
+    throw error;
+  }
+
+  return data as BootstrapResponse;
 }
 
 export async function fetchModelInfo(): Promise<ModelInfoResponse> {
@@ -100,6 +109,14 @@ export async function submitVoiceLead(payload: LeadPayload) {
   });
 
   return parseApiResponse(response);
+}
+
+export function submitVoiceLeadInBackground(payload: LeadPayload, onError?: (error: unknown) => void) {
+  void submitVoiceLead(payload).catch((error) => {
+    if (onError) {
+      onError(error);
+    }
+  });
 }
 
 export async function sendAssistantChat(messages: AssistantMessage[]) {

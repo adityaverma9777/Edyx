@@ -14,6 +14,8 @@ export default function VoiceAssistantPage() {
   const [step, setStep] = useState<FlowStep>("intro");
   const [bootstrapping, setBootstrapping] = useState(false);
   const [bootstrapError, setBootstrapError] = useState("");
+  const [connectingMessage, setConnectingMessage] = useState("Please wait, we are connecting you to the agent.");
+  const [bootstrapAttempt, setBootstrapAttempt] = useState(0);
   const [sessionId, setSessionId] = useState("");
   const [language, setLanguage] = useState("en");
   const [greeting, setGreeting] = useState("Hi, I am your Edyx assistant. How can I help you today?");
@@ -39,21 +41,56 @@ export default function VoiceAssistantPage() {
     };
   }, []);
 
-  async function openMode(mode: "call" | "chat") {
-    setBootstrapError("");
-    setBootstrapping(true);
-    try {
-      const data = await bootstrapAssistant();
-      setSessionId(data.sessionId);
-      setGreeting(data.greeting || greeting);
-      const preferred = data.supportedLanguages?.includes("en") ? "en" : data.supportedLanguages?.[0] || "en";
-      setLanguage(preferred);
-      setStep(mode);
-    } catch (error: any) {
-      setBootstrapError(error?.message || "Could not start assistant session.");
-    } finally {
-      setBootstrapping(false);
+  useEffect(() => {
+    if (step !== "mode" || sessionId) {
+      return;
     }
+
+    let cancelled = false;
+    const controller = new AbortController();
+
+    async function ensureAssistantReady() {
+      setBootstrapError("");
+      setBootstrapping(true);
+      setConnectingMessage("Please wait, we are connecting you to the agent.");
+
+      try {
+        const data = await bootstrapAssistant(controller.signal);
+        if (cancelled) return;
+
+        setSessionId(data.sessionId);
+        setGreeting(data.greeting || greeting);
+        const preferred = data.supportedLanguages?.includes("en") ? "en" : data.supportedLanguages?.[0] || "en";
+        setLanguage(preferred);
+        setBootstrapError("");
+      } catch (error: any) {
+        if (cancelled) return;
+
+        if (error?.name === "AbortError") {
+          return;
+        }
+
+        setBootstrapError(error?.message || "Still waking up. Please retry in a moment.");
+      } finally {
+        if (!cancelled) {
+          setBootstrapping(false);
+        }
+      }
+    }
+
+    ensureAssistantReady();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [bootstrapAttempt, greeting, sessionId, step]);
+
+  function openMode(mode: "call" | "chat") {
+    if (!canOpenInteraction) {
+      return;
+    }
+    setStep(mode);
   }
 
   return (
@@ -65,15 +102,30 @@ export default function VoiceAssistantPage() {
       <div className="voice-noise" />
 
       <AnimatePresence mode="wait">
-        {step === "intro" && <IntroScreen onComplete={() => setStep("form")} />}
+        {step === "intro" && (
+          <IntroScreen onComplete={() => setStep((current) => (current === "intro" ? "form" : current))} />
+        )}
       </AnimatePresence>
 
       {step === "form" && <UserForm onCompleted={() => setStep("mode")} />}
       {step === "mode" && (
         <>
-          <ModeSelection onSelect={openMode} />
-          {bootstrapping && <div className="voice-bootstrap-note">Starting assistant session...</div>}
+          {!canOpenInteraction && (
+            <div className="voice-bootstrap-note">
+              {bootstrapping ? connectingMessage : "Connection paused. Tap retry to reconnect."}
+            </div>
+          )}
+          {canOpenInteraction && <ModeSelection onSelect={openMode} />}
           {bootstrapError && <div className="voice-bootstrap-error">{bootstrapError}</div>}
+          {bootstrapError && !canOpenInteraction && !bootstrapping && (
+            <button
+              className="voice-bootstrap-retry"
+              type="button"
+              onClick={() => setBootstrapAttempt((attempt) => attempt + 1)}
+            >
+              Retry Connection
+            </button>
+          )}
         </>
       )}
       {step === "call" && canOpenInteraction && (
