@@ -673,6 +673,22 @@
   box-shadow: var(--va-shadow-lg);
 }
 
+.voice-ptt-hint {
+  min-width: 240px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  text-align: center;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--va-text-secondary);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  padding: 2px 6px 0;
+}
+
 .voice-ctrl-btn {
   width: 48px;
   height: 48px;
@@ -709,6 +725,15 @@
   border-color: rgba(0, 113, 227, 0.2);
   color: var(--va-accent-blue);
   box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.08);
+}
+
+.voice-ptt-btn.holding,
+.voice-ptt-btn.active {
+  box-shadow:
+    0 0 0 4px rgba(0, 113, 227, 0.14),
+    0 0 24px rgba(0, 113, 227, 0.28),
+    var(--va-shadow-md);
+  border-color: rgba(0, 113, 227, 0.34);
 }
 
 .voice-ctrl-btn.danger {
@@ -966,6 +991,13 @@
   .voice-call-controls {
     padding: 8px 14px;
     gap: 8px;
+  }
+
+  .voice-ptt-hint {
+    min-width: 100%;
+    order: -1;
+    font-size: 0.8rem;
+    margin-bottom: 2px;
   }
 
   .voice-ctrl-btn {

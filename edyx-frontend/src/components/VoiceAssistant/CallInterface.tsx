@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Mic, Volume2, VolumeX, Radio, PhoneOff } from "lucide-react";
+import { Mic, Volume2, VolumeX, PhoneOff } from "lucide-react";
 import SiriWaveform from "./SiriWaveform";
 import AudioMeter from "../../lib/AudioMeter";
 import { fetchAssistantTtsAudio, resetAssistantSession, respondAssistant, transcribeCallAudio } from "../../lib/voiceAssistantApi";
@@ -22,11 +22,11 @@ type Caption = {
 
 export default function CallInterface({ onEnd, onBack, sessionId, greeting, language }: CallInterfaceProps) {
   const [muted, setMuted] = useState(false);
-  const [autoListen, setAutoListen] = useState(true);
-  const [status, setStatus] = useState<CallStatus>("listening");
+  const [status, setStatus] = useState<CallStatus>("idle");
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
+  const [isPushToTalkPressed, setIsPushToTalkPressed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [userMeter, setUserMeter] = useState<AudioMeter | null>(null);
   const [assistantMeter, setAssistantMeter] = useState<AudioMeter | null>(null);
@@ -48,25 +48,24 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
   
   // Timers and Tracking
   const speakingRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const autoListenTimeoutRef = useRef<number | null>(null);
-  const recordingTimeoutRef = useRef<number | null>(null);
-  const vadFrameRef = useRef<number | null>(null);
   const ttsEventRef = useRef(0);
+  const holdSourceRef = useRef<"mouse" | "touch" | "keyboard" | null>(null);
+  const recordingStartedAtRef = useRef(0);
 
-  // State refs for VAD loop access
+  // State refs for async callback access.
   const statusRef = useRef(status);
   const isThinkingRef = useRef(isThinking);
   const isRecordingRef = useRef(isRecording);
-  const autoListenRef = useRef(autoListen);
   const mutedRef = useRef(muted);
+  const isPushToTalkPressedRef = useRef(isPushToTalkPressed);
 
   useEffect(() => { statusRef.current = status; }, [status]);
   useEffect(() => { isThinkingRef.current = isThinking; }, [isThinking]);
   useEffect(() => { isRecordingRef.current = isRecording; }, [isRecording]);
-  useEffect(() => { autoListenRef.current = autoListen; }, [autoListen]);
   useEffect(() => { mutedRef.current = muted; }, [muted]);
+  useEffect(() => { isPushToTalkPressedRef.current = isPushToTalkPressed; }, [isPushToTalkPressed]);
 
-  // Setup Persistent Microphone and VAD
+  // Setup persistent microphone input for push-to-talk recording.
   useEffect(() => {
     let unmounted = false;
 
@@ -98,34 +97,8 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
         const meter = new AudioMeter(analyser);
         setUserMeter(meter);
 
-        // VAD Loop
-        let vadConseqFrames = 0;
-        const checkVAD = () => {
-          if (
-            !mutedRef.current && 
-            statusRef.current === "speaking" && 
-            autoListenRef.current && 
-            !isRecordingRef.current
-          ) {
-            const vol = meter.read(16).level;
-            if (vol > 0.08) { // Volume threshold
-              vadConseqFrames++;
-              if (vadConseqFrames > 12) { // ~200ms of sustained audio spike
-                interruptAndListen();
-                vadConseqFrames = 0;
-              }
-            } else {
-              vadConseqFrames = 0;
-            }
-          } else {
-            vadConseqFrames = 0;
-          }
-          vadFrameRef.current = requestAnimationFrame(checkVAD);
-        };
-        vadFrameRef.current = requestAnimationFrame(checkVAD);
-
       } catch (err) {
-        setErrorMessage("Microphone permission failed. You can retry with Speak Now.");
+        setErrorMessage("Microphone permission failed. Please enable microphone access and try again.");
       }
     }
 
@@ -133,12 +106,9 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
 
     return () => {
       unmounted = true;
-      if (vadFrameRef.current) cancelAnimationFrame(vadFrameRef.current);
       if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
         mediaRecorderRef.current.stop();
       }
-      if (autoListenTimeoutRef.current) window.clearTimeout(autoListenTimeoutRef.current);
-      if (recordingTimeoutRef.current) window.clearTimeout(recordingTimeoutRef.current);
       
       setUserMeter(null);
       setAssistantMeter(null);
@@ -183,9 +153,7 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
   useEffect(() => {
     setCaptions([{ role: "assistant", text: greeting }]);
     if (!muted) {
-      speakText(greeting, () => {
-        if (autoListenRef.current) startRecording();
-      });
+      speakText(greeting);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [greeting]);
@@ -198,19 +166,11 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
 
   const statusLabel = useMemo(() => {
     if (isThinking) return "Processing";
-    if (isRecording) return "Listening";
+    if (isRecording) return "Listening...";
     if (status === "speaking") return "Speaking";
-    if (status === "listening") return "Listening";
+    if (isPushToTalkPressed) return "Hold to Speak";
     return "Ready";
-  }, [status, isRecording, isThinking]);
-
-  function scheduleAutoListen() {
-    if (!autoListenRef.current || mutedRef.current || isRecordingRef.current) return;
-    if (autoListenTimeoutRef.current) window.clearTimeout(autoListenTimeoutRef.current);
-    autoListenTimeoutRef.current = window.setTimeout(() => {
-      startRecording();
-    }, 450);
-  }
+  }, [status, isRecording, isThinking, isPushToTalkPressed]);
 
   function stopAssistantPlayback() {
     window.speechSynthesis.cancel();
@@ -223,20 +183,16 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
     setAssistantMeter(null);
   }
 
-  const interruptAndListen = useCallback(() => {
+  function interruptAssistantForPushToTalk() {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       abortControllerRef.current = new AbortController();
     }
-    
+
     stopAssistantPlayback();
     setIsThinking(false);
-    
-    if (autoListenTimeoutRef.current) window.clearTimeout(autoListenTimeoutRef.current);
-    if (recordingTimeoutRef.current) window.clearTimeout(recordingTimeoutRef.current);
-    
-    startRecording();
-  }, []);
+    setStatus("idle");
+  }
 
   async function speakWithAnalyzedAudio(text: string, onDone?: () => void): Promise<boolean> {
     try {
@@ -270,9 +226,9 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
         source.disconnect();
         analyser.disconnect();
         URL.revokeObjectURL(url);
-        // Only trigger done and set listen mode if we weren't interrupted out of speaking
+        // Only trigger done if we were not interrupted out of speaking.
         if (statusRef.current === "speaking") {
-          setStatus("listening");
+          setStatus("idle");
           onDone?.();
         }
       };
@@ -311,7 +267,7 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
       };
       utterance.onend = () => {
         if (statusRef.current === "speaking") {
-          setStatus("listening");
+          setStatus("idle");
           onDone?.();
         }
       };
@@ -341,8 +297,8 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
   async function processUserText(text: string) {
     const cleanText = text.trim();
     if (!cleanText) {
-      setErrorMessage("I could not detect speech. Try Speak Now again.");
-      scheduleAutoListen();
+      setErrorMessage("I could not detect speech. Hold to speak and try again.");
+      setStatus("idle");
       return;
     }
 
@@ -367,17 +323,16 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
       setCaptions((prev) => [...prev, { role: "assistant", text: reply }]);
       speakText(reply, () => {
         setIsThinking(false);
-        scheduleAutoListen();
+        setStatus("idle");
       });
     } catch (e: any) {
       if (e.name === "AbortError") return;
 
-      const fallback = "Network issue occurred, but you can continue by pressing Speak Now again.";
+      const fallback = "Network issue occurred, but you can continue by holding the mic and speaking again.";
       setCaptions((prev) => [...prev, { role: "assistant", text: fallback }]);
       setErrorMessage("Network error. Please try again.");
       setIsThinking(false);
-      setStatus("listening");
-      scheduleAutoListen();
+      setStatus("idle");
     }
   }
 
@@ -402,12 +357,13 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
       };
 
       recorder.onstop = async () => {
-        if (recordingTimeoutRef.current) window.clearTimeout(recordingTimeoutRef.current);
         setIsRecording(false);
-        
-        // If they hit interrupt mid-recording, or we transitioned
-        if (statusRef.current === "listening") {
-            setStatus("idle");
+        setStatus("idle");
+
+        const durationMs = Date.now() - recordingStartedAtRef.current;
+        if (durationMs < 300) {
+          setErrorMessage("Hold the mic while speaking, then release to send.");
+          return;
         }
 
         const blob = new Blob(chunksRef.current, { type: "audio/webm" });
@@ -435,14 +391,18 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
 
       recorder.start();
       mediaRecorderRef.current = recorder;
+      recordingStartedAtRef.current = Date.now();
       setIsRecording(true);
       setStatus("listening");
 
-      recordingTimeoutRef.current = window.setTimeout(() => {
-        if (recorder.state !== "inactive") recorder.stop();
-      }, 5600);
+      // If the hold is already released by the time recorder starts, stop immediately.
+      if (!holdSourceRef.current && recorder.state !== "inactive") {
+        recorder.stop();
+      }
     } catch {
-      setErrorMessage("Microphone permission failed. You can retry with Speak Now.");
+      setErrorMessage("Microphone permission failed. Please check browser permissions.");
+      setIsPushToTalkPressed(false);
+      holdSourceRef.current = null;
       setStatus("idle");
     }
   }
@@ -453,15 +413,90 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
     recorder.stop();
   }
 
-  function handleMicClick() {
-    if (status === "speaking" || isThinking) {
-      interruptAndListen();
-    } else if (isRecording) {
-      stopRecording();
-    } else {
-      startRecording();
+  function handlePushToTalkStart(source: "mouse" | "touch" | "keyboard") {
+    if (holdSourceRef.current || mutedRef.current) {
+      return;
     }
+
+    if (statusRef.current === "speaking" || isThinkingRef.current) {
+      interruptAssistantForPushToTalk();
+    }
+
+    holdSourceRef.current = source;
+    isPushToTalkPressedRef.current = true;
+    setIsPushToTalkPressed(true);
+    void startRecording();
   }
+
+  function handlePushToTalkEnd(source?: "mouse" | "touch" | "keyboard") {
+    if (!holdSourceRef.current) {
+      return;
+    }
+
+    if (source && holdSourceRef.current !== source) {
+      return;
+    }
+
+    holdSourceRef.current = null;
+    isPushToTalkPressedRef.current = false;
+    setIsPushToTalkPressed(false);
+    stopRecording();
+  }
+
+  useEffect(() => {
+    if (!isPushToTalkPressedRef.current) {
+      return;
+    }
+
+    const releaseMouse = () => handlePushToTalkEnd("mouse");
+    const releaseTouch = () => handlePushToTalkEnd("touch");
+
+    window.addEventListener("mouseup", releaseMouse);
+    window.addEventListener("touchend", releaseTouch);
+    window.addEventListener("touchcancel", releaseTouch);
+
+    return () => {
+      window.removeEventListener("mouseup", releaseMouse);
+      window.removeEventListener("touchend", releaseTouch);
+      window.removeEventListener("touchcancel", releaseTouch);
+    };
+  }, [isPushToTalkPressed]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.code !== "Space" || event.repeat) {
+        return;
+      }
+
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      handlePushToTalkStart("keyboard");
+    };
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (event.code !== "Space") {
+        return;
+      }
+
+      event.preventDefault();
+      handlePushToTalkEnd("keyboard");
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+    };
+  }, []);
 
   function handleEndCall() {
     resetAssistantSession(sessionId).catch(() => undefined);
@@ -489,7 +524,7 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
         <div className="voice-live-dot" />
       </motion.div>
 
-      <div className="voice-call-core" onMouseDown={stopRecording} onTouchEnd={stopRecording}>
+      <div className="voice-call-core">
         <SiriWaveform
           userMeter={userMeter}
           assistantMeter={assistantMeter}
@@ -530,26 +565,39 @@ export default function CallInterface({ onEnd, onBack, sessionId, greeting, lang
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <motion.button
-          className={`voice-ctrl-btn ${isRecording ? "active" : ""}`}
-          onClick={handleMicClick}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.92 }}
-          transition={{ type: "spring", stiffness: 400, damping: 18 }}
-          title={isRecording ? "Stop Recording" : isThinking || status === "speaking" ? "Interrupt" : "Speak Now"}
-        >
-          <Mic size={20} />
-        </motion.button>
+        <div className="voice-ptt-hint">
+          {isRecording ? "Listening..." : "Hold to speak (or hold Space), release to send"}
+        </div>
 
         <motion.button
-          className={`voice-ctrl-btn ${autoListen ? "active" : ""}`}
-          onClick={() => setAutoListen((prev) => !prev)}
+          className={`voice-ctrl-btn voice-ptt-btn ${isRecording ? "active" : ""} ${isPushToTalkPressed ? "holding" : ""}`}
+          onMouseDown={(event) => {
+            event.preventDefault();
+            handlePushToTalkStart("mouse");
+          }}
+          onMouseUp={(event) => {
+            event.preventDefault();
+            handlePushToTalkEnd("mouse");
+          }}
+          onTouchStart={(event) => {
+            event.preventDefault();
+            handlePushToTalkStart("touch");
+          }}
+          onTouchEnd={(event) => {
+            event.preventDefault();
+            handlePushToTalkEnd("touch");
+          }}
+          onTouchCancel={(event) => {
+            event.preventDefault();
+            handlePushToTalkEnd("touch");
+          }}
+          onContextMenu={(event) => event.preventDefault()}
           whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.92 }}
+          whileTap={{ scale: 0.98 }}
           transition={{ type: "spring", stiffness: 400, damping: 18 }}
-          title={`Auto Listen: ${autoListen ? "On" : "Off"}`}
+          title="Hold to speak (or hold Space), release to send"
         >
-          <Radio size={20} />
+          <Mic size={20} />
         </motion.button>
 
         <motion.button
