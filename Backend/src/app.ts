@@ -15,6 +15,17 @@ app.use(express.json());
 app.get("/", (_req, res) => {
   res.json({ status: "Edyx backend running" });
 });
+
+// Lightweight unauthenticated warm-up endpoint for Render cold starts.
+app.get("/wake", (_req, res) => {
+  res.status(200).send("ok");
+});
+
+// Lightweight health endpoint with no DB/network side effects.
+app.get("/health", (_req, res) => {
+  res.status(200).json({ ok: true, service: "edyx-backend" });
+});
+
 app.use("/auth", authRoutes);
 app.use("/keys", apiKeyRoutes);
 app.use("/chat", chatRoutes);
