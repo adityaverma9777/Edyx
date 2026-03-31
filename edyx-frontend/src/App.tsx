@@ -11,8 +11,11 @@ import PdfSummarizer from "./pages/PdfSummarizer";
 import IconGenerator from "./pages/IconGenerator";
 import YoutubeTranscriber from "./pages/YoutubeTranscriber";
 import VoiceAssistantPage from "./pages/VoiceAssistantPage";
+import { useWarmupBackend } from "./hooks/useWarmupBackend";
 
 function App() {
+  useWarmupBackend();
+
   return (
     <Router>
       <AssistantBubble />
